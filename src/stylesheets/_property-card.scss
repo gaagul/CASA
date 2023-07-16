@@ -1,0 +1,14 @@
+.property-card {
+    &__address {
+        font-size: 12px !important;
+        font-weight: 300 !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    &__footer-item {
+        font-size: 10px !important;
+        font-weight: 300 !important;
+    }
+}
