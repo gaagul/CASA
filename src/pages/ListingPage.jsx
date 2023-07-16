@@ -60,8 +60,8 @@ const ListingPage = () => {
             {!isEmpty(filteredProperties) ? (
               filteredProperties
                 .slice((currentPage - 1) * 12, currentPage * 12)
-                .map(({ id, ...property }) => (
-                  <PropertyCard key={id} property={property} />
+                .map(property => (
+                  <PropertyCard key={property?.id} property={property} />
                 ))
             ) : (
               <div className="flex h-full w-full flex-col items-center justify-around">

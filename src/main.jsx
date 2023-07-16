@@ -21,7 +21,7 @@ const Main = () => {
           <BrowserRouter>
             <Navbar />
             <Routes>
-              <Route element={<Details />} path="/details/:id" />
+              <Route element={<Details />} path="/listing/:id" />
               <Route element={<Form />} path="/add" />
               <Route element={<Login />} path="/login" />
               <Route element={<Signup />} path="/signup" />
