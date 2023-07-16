@@ -5,6 +5,7 @@ import {
   getDoc,
   getDocs,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import randomString from "random-string";
@@ -38,6 +39,24 @@ const fetchUserById = async uid =>
       throw error;
     });
 
+const setPropertyStatus = async (propertyId, status) => {
+  const property = await fetchPropertyById(propertyId);
+  console.log("property", property.data())
+  let currentStatus = property.data().status;
+  let updatedStatus = currentStatus;
+  if(status === "Approve")  
+    updatedStatus = "approved"
+  else if (status === "Reject")
+    updatedStatus = "rejected"
+  else if (status === "Pending")
+    updatedStatus = "pending"
+  
+  if(updatedStatus !== currentStatus)
+    return await updateDoc(doc(db, property._key.path.segments[0], property._key.path.segments[1]), {status: updatedStatus});
+  else
+    throw "Nothing to update as current state same as the update state."
+}
+
 const createNewUserWithRole = async (userId, userDetails) => {
   const isUserExists = await fetchUserById(userId);
   if (isUserExists.exists()) {
@@ -70,6 +89,7 @@ export {
   fetchAllProperties,
   fetchPropertyById,
   createProperty,
+  setPropertyStatus,
   createNewUserWithRole,
   uploadImageAsset,
   getImageURL,
