@@ -27,6 +27,7 @@ const Assets = ({ assets, setAssets }) => {
     },
     beforeUpload: () => false,
     onChange: ({ fileList: newFileList }) => {
+      console.log(assets);
       setAssets(prevAssets => ({
         ...prevAssets,
         fileList: newFileList.slice(0, 8),
@@ -41,6 +42,16 @@ const Assets = ({ assets, setAssets }) => {
       if (file?.status === "removed") {
         setAssets(prevState => ({ ...prevState, thumbnail: null }));
       } else {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+          file.thumbURL = reader.result;
+          console.log(reader.result);
+        };
+
+        reader.onerror = function (error) {
+          console.log("Error in base64 conversion of image: ", error);
+        };
         setAssets(prevState => ({ ...prevState, thumbnail: file }));
       }
     },

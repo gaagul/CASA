@@ -13,7 +13,7 @@ const PropertyCard = ({ property }) => (
     <img
       alt="img"
       className="thumbnail h-1/2 w-full"
-      src={property?.thumbnail}
+      src={property?.thumbnailUrl}
     />
     <div className="mt-2 flex flex-col px-4">
       <div className="flex items-center justify-between">
