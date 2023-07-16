@@ -43,6 +43,7 @@
     "postcss-flexbugs-fixes": "^5.0.2",
     "qs": "^6.11.2",
     "ramda": "^0.29.0",
+    "random-string": "^0.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-query": "^3.39.3",

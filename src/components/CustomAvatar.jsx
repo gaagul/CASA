@@ -25,7 +25,7 @@ const items = [
 ];
 
 const AvatarMenu = () => (
-  <Dropdown className="z-50" menu={{ items }} trigger={["click"]}>
+  <Dropdown menu={{ items }} trigger={["click"]} className="z-50">
     <UserOutlined />
   </Dropdown>
 );

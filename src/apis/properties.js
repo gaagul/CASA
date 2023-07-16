@@ -1,5 +1,14 @@
-import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+} from "firebase/firestore";
+import { ref, uploadString, getDownloadURL } from "firebase/storage";
+import randomString from "random-string";
+import { db, storage } from "../firebase";
 
 const fetchAllProperties = async () =>
   await getDocs(collection(db, "properties"))
@@ -10,6 +19,13 @@ const fetchAllProperties = async () =>
 
 const fetchPropertyById = async id =>
   await getDoc(doc(db, "properties", id))
+    .then(response => response)
+    .catch(error => {
+      throw error;
+    });
+
+const createProperty = async propertyInfo =>
+  await addDoc(collection(db, "properties"), propertyInfo)
     .then(response => response)
     .catch(error => {
       throw error;
@@ -38,4 +54,23 @@ const createNewUserWithRole = async (userId, userDetails) => {
     });
 };
 
-export { fetchAllProperties, fetchPropertyById, createNewUserWithRole };
+const getImageURL = async imageSnapshotRef =>
+  await getDownloadURL(imageSnapshotRef);
+
+const uploadImageAsset = async thumbURL => {
+  const storageRef = ref(storage, `properties-images/${randomString()}.jpg`);
+  const uploadedSnapshot = await uploadString(storageRef, thumbURL, "base64");
+  const downloadURL = await getImageURL(uploadedSnapshot.ref);
+  console.log("File available at", downloadURL);
+
+  return downloadURL;
+};
+
+export {
+  fetchAllProperties,
+  fetchPropertyById,
+  createProperty,
+  createNewUserWithRole,
+  uploadImageAsset,
+  getImageURL,
+};
