@@ -10,6 +10,7 @@ import {
 } from "@ant-design/icons";
 import { Tag, Dropdown } from "antd";
 import { Link } from "react-router-dom";
+import { setPropertyStatus } from "../../apis/properties";
 
 export const getItem = (label, key, icon, children) => ({
   key,
@@ -77,7 +78,8 @@ export const createTableActionsMenuItems = id =>
     key: label,
     label,
     icon,
-    onClick: () => console.log(`Clicked on ${label} for ${id}`),
+    onClick: () => setPropertyStatus(id, label),
+    
   }));
 
 export const columns = [
@@ -93,19 +95,19 @@ export const columns = [
   },
   {
     title: "Address",
-    dataIndex: "address",
-    key: "address",
+    dataIndex: "location",
+    key: "location",
   },
   {
     title: "Tags",
-    key: "tags",
-    dataIndex: "tag",
-    render: (_, { tag }) => {
-      const color = tag === "isRent" ? "geekblue" : "green";
+    key: "type",
+    dataIndex: "type",
+    render: (_, { type }) => {
+      const color = type === "rent" ? "geekblue" : "green";
 
       return (
-        <Tag color={color} key={tag}>
-          {tag.toUpperCase()}
+        <Tag color={color} key={type}>
+          {type.toUpperCase()}
         </Tag>
       );
     },
@@ -113,9 +115,9 @@ export const columns = [
   {
     title: "Actions",
     key: "actions",
-    render: (_, { key }) => (
+    render: (_, { id }) => (
       <Dropdown
-        menu={{ items: createTableActionsMenuItems(key) }}
+        menu={{ items: createTableActionsMenuItems(id) }}
         trigger={["click"]}
       >
         <a onClick={e => e.preventDefault()}>
@@ -125,7 +127,9 @@ export const columns = [
     ),
   },
 ];
-export const data = [
+
+
+export const properties = [
   {
     key: "1",
     name: "Villa 1",
