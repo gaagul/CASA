@@ -1,16 +1,22 @@
 import React from "react";
 import { Table as AntdTable, Spin } from "antd";
-import { properties, columns } from "./constants";
+import { useQueryClient } from "@tanstack/react-query";
 import { useFetchProperties } from "../../hooks/usePropertiesApi";
+import { buildColumns } from "./constants";
 
 const Table = ({ searchParams }) => {
+  const queryClient = useQueryClient();
+
   const filter = {
     keyword: searchParams.get("keyword"),
     status: searchParams.get("status"),
   };
 
-  const buildFilteredData = (data) => {
-    console.log("keyword", filter.keyword, "status", filter.status)
+  const statusChangeCallback = () => {
+    queryClient.invalidateQueries("propertiesList");
+  };
+
+  const buildFilteredData = data => {
     const filteredData = data.filter(obj => {
       if (filter.keyword && !obj.name.includes(filter.keyword)) {
         return false;
@@ -27,18 +33,19 @@ const Table = ({ searchParams }) => {
   };
 
   const { data = [], isLoading } = useFetchProperties();
-  if(isLoading) {
-    return <Spin className="flex h-full w-full flex-col items-center justify-around"/>
+  if (isLoading) {
+    return (
+      <Spin className="flex h-full w-full flex-col items-center justify-around" />
+    );
   }
-  if(!isLoading){
+
   return (
     <AntdTable
       className="mt-4"
-      columns={columns}
+      columns={buildColumns(statusChangeCallback)}
       dataSource={buildFilteredData(data)}
     />
   );
-  }
 };
 
 export default Table;

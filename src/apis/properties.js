@@ -39,23 +39,28 @@ const fetchUserById = async uid =>
       throw error;
     });
 
-const setPropertyStatus = async (propertyId, status) => {
+const setPropertyStatus = async (
+  propertyId,
+  status,
+  successCallback = () => {}
+) => {
   const property = await fetchPropertyById(propertyId);
-  console.log("property", property.data())
-  let currentStatus = property.data().status;
+  const currentStatus = property.data().status;
   let updatedStatus = currentStatus;
-  if(status === "Approve")  
-    updatedStatus = "approved"
-  else if (status === "Reject")
-    updatedStatus = "rejected"
-  else if (status === "Pending")
-    updatedStatus = "pending"
-  
-  if(updatedStatus !== currentStatus)
-    return await updateDoc(doc(db, property._key.path.segments[0], property._key.path.segments[1]), {status: updatedStatus});
-  else
-    throw "Nothing to update as current state same as the update state."
-}
+  if (status === "Approve") updatedStatus = "approved";
+  else if (status === "Reject") updatedStatus = "rejected";
+  else if (status === "Pending") updatedStatus = "pending";
+
+  if (updatedStatus !== currentStatus) {
+    successCallback();
+
+    return await updateDoc(
+      doc(db, property._key.path.segments[0], property._key.path.segments[1]),
+      { status: updatedStatus }
+    );
+  }
+  throw "Nothing to update as current state same as the update state.";
+};
 
 const createNewUserWithRole = async (userId, userDetails) => {
   const isUserExists = await fetchUserById(userId);
