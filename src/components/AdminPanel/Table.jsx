@@ -12,9 +12,8 @@ const Table = ({ searchParams }) => {
     status: searchParams.get("status"),
   };
 
-  const statusChangeCallback = () => {
+  const statusChangeCallback = () =>
     queryClient.invalidateQueries("propertiesList");
-  };
 
   const buildFilteredData = data => {
     const filteredData = data.filter(obj => {
