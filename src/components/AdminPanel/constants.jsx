@@ -73,16 +73,15 @@ export const TABLE_ACTIONS = [
   { label: "Reject", icon: <CloseCircleOutlined /> },
 ];
 
-export const createTableActionsMenuItems = id =>
+export const createTableActionsMenuItems = (id, statusChangeCallback) =>
   TABLE_ACTIONS.map(({ label, icon }) => ({
     key: label,
     label,
     icon,
-    onClick: () => setPropertyStatus(id, label),
-    
+    onClick: () => setPropertyStatus(id, label, statusChangeCallback),
   }));
 
-export const columns = [
+export const buildColumns = statusChangeCallback => [
   {
     title: "Name",
     dataIndex: "name",
@@ -117,7 +116,7 @@ export const columns = [
     key: "actions",
     render: (_, { id }) => (
       <Dropdown
-        menu={{ items: createTableActionsMenuItems(id) }}
+        menu={{ items: createTableActionsMenuItems(id, statusChangeCallback) }}
         trigger={["click"]}
       >
         <a onClick={e => e.preventDefault()}>
@@ -127,7 +126,6 @@ export const columns = [
     ),
   },
 ];
-
 
 export const properties = [
   {
