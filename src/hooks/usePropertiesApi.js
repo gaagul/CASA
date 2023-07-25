@@ -17,7 +17,7 @@ const useFetchProperties = () =>
   });
 
 const useFetchPropertyById = id =>
-  useQuery([QUERY_KEYS.PROPERTY_BY_ID], () => fetchPropertyById(id));
+  useQuery([QUERY_KEYS.PROPERTY_BY_ID, id], () => fetchPropertyById(id));
 
 const useFetchApprovedProperties = () => 
   useQuery([QUERY_KEYS.APPROVED_PROPERTIES], fetchApprovedProperties, {
