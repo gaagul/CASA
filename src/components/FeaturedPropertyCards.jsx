@@ -1,20 +1,13 @@
 import React from "react";
-import { collection, getDocs } from "firebase/firestore";
 import { Spin } from "antd";
 import PropertyCard from "./PropertyCard";
 import { useFetchFeaturedAssets } from "../hooks/usePropertiesApi";
-import { db } from "../firebase";
-
-const fetchFeaturedProperties = async () =>
-  await getDocs(collection(db, "properties"));
 
 const FeaturedPropertyCards = () => {
-  const numbers = [1, 2, 3, 4];
-  const array = [];
-
   const { data, status, error } = useFetchFeaturedAssets();
+  console.log("Data", data);
   if (status === "loading") {
-    return <Spin />;
+    return <Spin className="flex h-full w-full flex-col items-center justify-around"/>;
   }
 
   if (status === "error") {
@@ -22,16 +15,13 @@ const FeaturedPropertyCards = () => {
     console.log(error);
   }
 
-  data.docs.forEach(property => {
-    array.push(property.data());
-  });
-
+  if(status === "success")
   return (
-    <div className="flex w-full flex-wrap justify-between">
-      {array.map(property => (
-        <div className="mb-10  basis-1/4 gap-2">
+    <div className="mt-4 flex flex-grow flex-wrap justify-start gap-6">
+      {data.map(property => (
+        
           <PropertyCard property={property} />
-        </div>
+        
       ))}
     </div>
   );

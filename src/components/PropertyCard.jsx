@@ -23,7 +23,7 @@ const PropertyCard = ({ property }) => {
     >
       <img
         alt="img"
-        className="thumbnail h-1/2 w-full"
+        className="thumbnail h-1/2 w-full rounded-t-lg"
         src={property?.thumbnailUrl}
       />
       <div className="mt-2 flex flex-col px-4">
@@ -59,12 +59,12 @@ const PropertyCard = ({ property }) => {
         <div className="mt-2 flex justify-between">
           <div className="flex items-center gap-1">
             <KingBedOutlined className="primary-text" fontSize="10" />
-            <p className="property-card__footer-item">{property?.beds} beds</p>
+            <p className="property-card__footer-item">{property?.bedrooms} beds</p>
           </div>
           <div className="flex items-center gap-1">
             <BathtubOutlined className="primary-text" fontSize="10" />
             <p className="property-card__footer-item">
-              {property?.baths} baths
+              {property?.bathrooms} baths
             </p>
           </div>
           <div className="flex items-center gap-1">

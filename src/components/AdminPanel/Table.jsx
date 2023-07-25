@@ -31,8 +31,8 @@ const Table = ({ searchParams }) => {
     return filteredData;
   };
 
-  const { data = [], isLoading } = useFetchProperties();
-  if (isLoading) {
+  const { data = [], isFetching } = useFetchProperties();
+  if (isFetching) {
     return (
       <Spin className="flex h-full w-full flex-col items-center justify-around" />
     );

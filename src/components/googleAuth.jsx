@@ -1,21 +1,23 @@
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import GoogleIcon from "@mui/icons-material/Google";
 import { Button } from "@mui/material";
 import { auth } from "../firebase";
-import { createNewUserWithRole } from "../apis/properties";
+import { signOut } from "firebase/auth";
+import { createNewUserWithRole, fetchUserById } from "../apis/properties";
 import {
   removeFromLocalStorage,
   setToLocalStorage,
 } from "../hooks/useLocalStorage";
 
 export const GoogleAuth = props => {
-  const navigate = useNavigate();
+  const location = useLocation();
 
   const invokeGoogleSignIn = () => {
     const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
     signInWithPopup(auth, provider)
-      .then(result => {
+      .then(async (result) => {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
         const { user } = result;
@@ -30,9 +32,17 @@ export const GoogleAuth = props => {
           role: "standard",
         };
         createNewUserWithRole(user.uid, userDetails);
+        const isUserExists = await fetchUserById(user.uid);
+        if(isUserExists)
+          userDetails.role = isUserExists.data().role;
         setToLocalStorage("loggedInUser", JSON.stringify(userDetails));
         setToLocalStorage("isLoggedIn", true);
-        navigate(props.redirectPath);
+        const { state = {} } = location;
+        let redirectPath = state?.from || "/";
+        if (state?.queryParams) {
+          redirectPath = `${redirectPath}?${state.queryParams}`;
+        }
+        window.location.href = redirectPath;
       })
       .catch(error => {
         const errorCode = error.code;

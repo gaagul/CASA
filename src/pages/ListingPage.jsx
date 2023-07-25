@@ -6,7 +6,7 @@ import PropertyCard from "components/PropertyCard";
 import Filterbar from "components/Filterbar";
 import { Spin, Typography, Pagination } from "antd";
 import { initializeFilters, filterProperties } from "../utils";
-import { useFetchProperties } from "../hooks/usePropertiesApi";
+import { useFetchApprovedProperties } from "../hooks/usePropertiesApi";
 
 const ListingPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -14,7 +14,7 @@ const ListingPage = () => {
   const [isFilterBarOpen, setIsFilterBarOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const { data = [], isLoading } = useFetchProperties();
+  const { data = [], isLoading } = useFetchApprovedProperties();
 
   const filteredProperties = useMemo(
     () => filterProperties(data, filters),

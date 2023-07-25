@@ -103,7 +103,7 @@ const AdditionalInfo = () => {
             type="text"
           />
           <ErrorMessage
-            name="name"
+            name="description"
             render={msg => <div className="error">{msg}</div>}
           />
         </div>

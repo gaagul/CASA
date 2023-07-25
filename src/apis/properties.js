@@ -4,8 +4,10 @@ import {
   doc,
   getDoc,
   getDocs,
+  query,
   setDoc,
   updateDoc,
+  where
 } from "firebase/firestore";
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import randomString from "random-string";
@@ -24,6 +26,20 @@ const fetchPropertyById = async id =>
     .catch(error => {
       throw error;
     });
+
+const fetchApprovedProperties = async () => 
+    await getDocs(query(collection(db, "properties"), where("status", "==", "approved")))
+      .then(response => response)
+      .catch(error => {
+        throw error;
+      });
+
+const fetchFeaturedProperties = async () => 
+await getDocs(query(collection(db, "properties"), where("isFeatured", "==", true)))
+  .then(response => response)
+  .catch(error => {
+    throw error;
+  })
 
 const createProperty = async propertyInfo =>
   await addDoc(collection(db, "properties"), propertyInfo)
@@ -52,12 +68,14 @@ const setPropertyStatus = async (
   else if (status === "Pending") updatedStatus = "pending";
 
   if (updatedStatus !== currentStatus) {
-    successCallback();
 
-    return await updateDoc(
+    await updateDoc(
       doc(db, property._key.path.segments[0], property._key.path.segments[1]),
       { status: updatedStatus }
     );
+    successCallback();
+    return true;
+    
   }
   throw "Nothing to update as current state same as the update state.";
 };
@@ -93,6 +111,9 @@ const uploadImageAsset = async thumbURL => {
 export {
   fetchAllProperties,
   fetchPropertyById,
+  fetchUserById,
+  fetchApprovedProperties,
+  fetchFeaturedProperties,
   createProperty,
   setPropertyStatus,
   createNewUserWithRole,

@@ -12,8 +12,10 @@ import { PROPERTY_FORM_INITIAL_VALUES, VALIDATION_SCHEMA } from "./constants";
 import { getFromLocalStorage } from "../../hooks/useLocalStorage";
 import { createProperty, uploadImageAsset } from "../../apis/properties";
 import { db } from "../../firebase";
+import { useNavigate } from "react-router-dom";
 
 const Form = () => {
+  const navigate = useNavigate();
   const [assets, setAssets] = useState({
     thumbnail: null,
     fileList: [],
@@ -78,8 +80,10 @@ const Form = () => {
     }
 
     formData.userId = loggedInUser.uid;
+    formData.status = "pending";
     const createdPropertyRef = await createProperty(formData);
     await handleAssetUpload(createdPropertyRef);
+    navigate("/listing");
   };
 
   const renderCurrentStep = () => {
@@ -101,6 +105,7 @@ const Form = () => {
       <Formik
         initialValues={PROPERTY_FORM_INITIAL_VALUES}
         validationSchema={VALIDATION_SCHEMA}
+        onSubmit={handleSubmit}
       >
         {({ isSubmitting, values, setSubmitting }) => (
           <FormikForm>
@@ -110,8 +115,8 @@ const Form = () => {
               {currentStep === 2 ? (
                 <Button
                   loading={isSubmitting}
-                  type="submit"
-                  onClick={() => handleSubmit(values)}
+                  disabled={isSubmitting}
+                  htmlType="submit"
                 >
                   Submit
                 </Button>
