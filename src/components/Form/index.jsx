@@ -80,6 +80,7 @@ const Form = () => {
     }
 
     formData.userId = loggedInUser.uid;
+    formData.status = "pending";
     const createdPropertyRef = await createProperty(formData);
     await handleAssetUpload(createdPropertyRef);
     navigate("/listing");
