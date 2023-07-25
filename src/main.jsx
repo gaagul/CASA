@@ -10,6 +10,7 @@ import ListingPage from "./pages/ListingPage";
 import Navbar from "./components/Navbar";
 import Form from "./components/Form";
 import Details from "./pages/Details";
+import Testpage from "./pages/Test";
 
 const Main = () => {
   const isLoggedIn = localStorage.getItem("isLoggedIn");
@@ -44,6 +45,7 @@ const Main = () => {
                 </>
               )}
               <Route element={<Home />} path="/" />
+              <Route element={<Testpage />} path="/test" />
             </Routes>
           </BrowserRouter>
         </QueryClientProvider>

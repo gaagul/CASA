@@ -52,12 +52,14 @@ const setPropertyStatus = async (
   else if (status === "Pending") updatedStatus = "pending";
 
   if (updatedStatus !== currentStatus) {
-    successCallback();
 
-    return await updateDoc(
+    await updateDoc(
       doc(db, property._key.path.segments[0], property._key.path.segments[1]),
       { status: updatedStatus }
     );
+    successCallback();
+    return true;
+    
   }
   throw "Nothing to update as current state same as the update state.";
 };
