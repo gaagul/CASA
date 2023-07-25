@@ -11,7 +11,7 @@ import AvatarMenu from "./CustomAvatar";
 
 const Navbar = () => {
   const isLoggedIn = localStorage.getItem("isLoggedIn");
-
+  
   return (
     <AppBar
       className="!bg-indigo-500"
@@ -31,9 +31,7 @@ const Navbar = () => {
             <AvatarMenu />
           ) : (
             <Box className="block">
-              <Link to="/signup">
-                <Button className="!mx-2 !text-white">Sign Up</Button>
-              </Link>
+              
               <Link to="/login">
                 <Button
                   className="!mx-2 !border-white !text-white"
