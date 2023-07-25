@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Searchbar from "../components/Searchbar";
 import TileGrid from "../components/TileGrid";
 import { createQueryString } from "../utils";
+import FeaturedPropertyCards from "../components/FeaturedPropertyCards";
 
 const Homepage = () => {
   const navigate = useNavigate();
@@ -69,7 +70,7 @@ const Homepage = () => {
                 <span className="text-indigo-500">Featured</span> Properties
               </Typography>
               <Box mt={4}>
-                <TileGrid />
+                <FeaturedPropertyCards />
               </Box>
             </Box>
           </Grid>
