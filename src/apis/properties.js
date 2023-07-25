@@ -4,8 +4,10 @@ import {
   doc,
   getDoc,
   getDocs,
+  query,
   setDoc,
   updateDoc,
+  where
 } from "firebase/firestore";
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import randomString from "random-string";
@@ -24,6 +26,20 @@ const fetchPropertyById = async id =>
     .catch(error => {
       throw error;
     });
+
+const fetchApprovedProperties = async () => 
+    await getDocs(query(collection(db, "properties"), where("status", "==", "approved")))
+      .then(response => response)
+      .catch(error => {
+        throw error;
+      });
+
+const fetchFeaturedProperties = async () => 
+await getDocs(query(collection(db, "properties"), where("isFeatured", "==", true)))
+  .then(response => response)
+  .catch(error => {
+    throw error;
+  })
 
 const createProperty = async propertyInfo =>
   await addDoc(collection(db, "properties"), propertyInfo)
@@ -95,6 +111,9 @@ const uploadImageAsset = async thumbURL => {
 export {
   fetchAllProperties,
   fetchPropertyById,
+  fetchUserById,
+  fetchApprovedProperties,
+  fetchFeaturedProperties,
   createProperty,
   setPropertyStatus,
   createNewUserWithRole,
