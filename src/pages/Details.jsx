@@ -1,36 +1,33 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React from "react";
+import { useParams } from "react-router-dom";
+import { Spin } from "antd";
 import Header from "../components/Details/Header";
-import { HOUSE } from "../components/constants";
 import Assets from "../components/Details/Assets";
 import SaleDetails from "../components/Details/SaleDetails";
 import PropertyDetails from "../components/Details/PropertyDetails";
 import Description from "../components/Details/Description";
+import { useFetchPropertyById } from "../hooks/usePropertiesApi";
 
 const Details = () => {
   const { id } = useParams();
-  console.log(id);
-  const navigate = useNavigate();
+  const { data, isLoading } = useFetchPropertyById(id);
+  const property = data?.data();
 
-  const [house, setHouse] = useState(HOUSE);
-
-  useEffect(() => {
-    // if (!id) {
-    //   navigate("/");
-    // }
-    // TODO: fetch house by id
-    setHouse(HOUSE);
-  }, [id]);
+  if (isLoading) {
+    return (
+      <Spin className="flex h-full w-full flex-col items-center justify-around" />
+    );
+  }
 
   return (
     <div className="mt-16 px-24 pb-10 pt-10">
-      <Header house={HOUSE} />
+      <Header house={property} />
       <div className="mt-8 flex max-h-96 justify-between gap-8">
-        <Assets house={HOUSE} />
-        <SaleDetails house={HOUSE} />
+        <Assets imageList={property?.imageList || []} />
+        <SaleDetails house={property} />
       </div>
-      <PropertyDetails house={HOUSE} />
-      <Description house={HOUSE} />
+      <PropertyDetails house={property} />
+      <Description house={property} />
     </div>
   );
 };
