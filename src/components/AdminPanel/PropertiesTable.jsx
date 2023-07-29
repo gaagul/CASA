@@ -1,10 +1,10 @@
 import React from "react";
 import { Table as AntdTable, Spin } from "antd";
 import { useQueryClient } from "@tanstack/react-query";
-import { useFetchProperties, useGetPropertiesWithMatchingZipcodes } from "../../hooks/usePropertiesApi";
-import { buildColumns } from "./constants";
+import { useGetPropertiesWithMatchingZipcodes } from "../../hooks/usePropertiesApi";
+import { buildPropertiesColumns } from "./constants";
 
-const Table = ({ searchParams }) => {
+const PropertiesTable = ({ searchParams, userDetails }) => {
   const queryClient = useQueryClient();
 
   const filter = {
@@ -31,22 +31,24 @@ const Table = ({ searchParams }) => {
     return filteredData;
   };
 
-  const { data = [], isFetching } = useGetPropertiesWithMatchingZipcodes("iOhjTqprMga27Iod0Pby2k8Pa2r1");
+  const { data = [], isFetching } = useGetPropertiesWithMatchingZipcodes(
+    userDetails?.uid,
+    { enabled: !!userDetails?.uid }
+  );
+
   if (isFetching) {
     return (
       <Spin className="flex h-full w-full flex-col items-center justify-around" />
     );
   }
 
-  console.log(data);
-
   return (
     <AntdTable
       className="mt-4"
-      columns={buildColumns(statusChangeCallback)}
+      columns={buildPropertiesColumns(statusChangeCallback)}
       dataSource={buildFilteredData(data)}
     />
   );
 };
 
-export default Table;
+export default PropertiesTable;
