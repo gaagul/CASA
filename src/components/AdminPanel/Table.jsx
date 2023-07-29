@@ -1,7 +1,7 @@
 import React from "react";
 import { Table as AntdTable, Spin } from "antd";
 import { useQueryClient } from "@tanstack/react-query";
-import { useFetchProperties } from "../../hooks/usePropertiesApi";
+import { useFetchProperties, useGetPropertiesWithMatchingZipcodes } from "../../hooks/usePropertiesApi";
 import { buildColumns } from "./constants";
 
 const Table = ({ searchParams }) => {
@@ -31,12 +31,14 @@ const Table = ({ searchParams }) => {
     return filteredData;
   };
 
-  const { data = [], isFetching } = useFetchProperties();
+  const { data = [], isFetching } = useGetPropertiesWithMatchingZipcodes("iOhjTqprMga27Iod0Pby2k8Pa2r1");
   if (isFetching) {
     return (
       <Spin className="flex h-full w-full flex-col items-center justify-around" />
     );
   }
+
+  console.log(data);
 
   return (
     <AntdTable

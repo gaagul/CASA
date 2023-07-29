@@ -12,6 +12,7 @@ import {
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import randomString from "random-string";
 import { db, storage } from "../firebase";
+import { createZipcode } from "./zipcode";
 
 const fetchAllProperties = async () =>
   await getDocs(collection(db, "properties"))
@@ -41,12 +42,17 @@ await getDocs(query(collection(db, "properties"), where("isFeatured", "==", true
     throw error;
   })
 
-const createProperty = async propertyInfo =>
-  await addDoc(collection(db, "properties"), propertyInfo)
-    .then(response => response)
-    .catch(error => {
-      throw error;
-    });
+const createProperty = async propertyInfo => {
+  let propertyResponse = await addDoc(collection(db, "properties"), propertyInfo)
+  .then(response => response)
+  .catch(error => {
+    throw error;
+  });
+  if(propertyResponse)
+    await createZipcode(propertyInfo.zipcode);
+  return propertyResponse;
+}
+  
 
 const fetchUserById = async uid =>
   await getDoc(doc(db, "users", uid))
@@ -108,6 +114,35 @@ const uploadImageAsset = async thumbURL => {
   return downloadURL;
 };
 
+const getPropertiesWithMatchingZipcodes = async userId => {
+  try {
+    // Step 1: Get the user document using the user ID
+    const userRef = doc(collection(db, 'users'), userId);
+    const userDoc = await getDoc(userRef);
+
+    // Step 2: Extract the listOfZipcodes array from the user document
+    const listOfZipcodes = userDoc.data().listOfZipcodes;
+
+    // Step 3: Fetch properties that have a zipcode matching any value in the listOfZipcodes array
+    const propertiesQuery = query(collection(db, 'properties'), where('zipcode', 'in', listOfZipcodes));
+    const propertiesSnapshot = await getDocs(propertiesQuery);
+
+    // Step 4: Extract and return the property data
+    const properties = [];
+    propertiesSnapshot.forEach((propertyDoc) => {
+      properties.push({
+        id: propertyDoc.id,
+        ...propertyDoc.data(),
+      });
+    });
+
+    return properties;
+  } catch (error) {
+    console.error('Error fetching properties:', error);
+    return [];
+  }
+}
+
 export {
   fetchAllProperties,
   fetchPropertyById,
@@ -119,4 +154,5 @@ export {
   createNewUserWithRole,
   uploadImageAsset,
   getImageURL,
+  getPropertiesWithMatchingZipcodes
 };
