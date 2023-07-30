@@ -47,7 +47,7 @@ const Main = () => {
               )}
               <Route element={<Home />} path="/" />
               <Route element={<Testpage />} path="/test" />
-              <Route element={<MyAccount />} path="/myaccount" />
+              <Route element={<MyAccount />} path="/account" />
             </Routes>
           </BrowserRouter>
         </QueryClientProvider>
