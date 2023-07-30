@@ -10,7 +10,7 @@ import {
   deleteDoc,
   where
 } from "firebase/firestore";
-import { ref, uploadString, getDownloadURL } from "firebase/storage";
+import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import randomString from "random-string";
 import { db, storage } from "../firebase";
 import { createZipcode } from "./zipcode";
@@ -109,13 +109,19 @@ const createNewUserWithRole = async (userId, userDetails) => {
 const getImageURL = async imageSnapshotRef =>
   await getDownloadURL(imageSnapshotRef);
 
-const uploadImageAsset = async thumbURL => {
+const uploadImageAsset = async file => {
   const storageRef = ref(storage, `properties-images/${randomString()}.jpg`);
-  const uploadedSnapshot = await uploadString(storageRef, thumbURL, "base64");
-  const downloadURL = await getImageURL(uploadedSnapshot.ref);
-  console.log("File available at", downloadURL);
-
-  return downloadURL;
+  try {
+    await uploadBytes(storageRef, file);
+    const downloadURL = await getDownloadURL(storageRef);
+    console.log("Download URL:", downloadURL);
+    return downloadURL;
+  } catch (error) {
+    console.error("Error uploading image:", error);
+  }
+  // const uploadedSnapshot = await uploadString(storageRef, thumbURL, "base64");
+  // const downloadURL = await getImageURL(uploadedSnapshot.ref);
+  // console.log("File available at", downloadURL);
 };
 
 const getPropertiesByUserId = async (uid) => {
