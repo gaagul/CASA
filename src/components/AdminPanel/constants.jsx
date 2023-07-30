@@ -1,16 +1,15 @@
 import React from "react";
 import {
   BarChartOutlined,
-  SettingOutlined,
   TeamOutlined,
-  DesktopOutlined,
   CheckOutlined,
   MoreOutlined,
   CloseCircleOutlined,
 } from "@ant-design/icons";
-import { Tag, Dropdown } from "antd";
+import { Tag, Dropdown, Button } from "antd";
 import { Link } from "react-router-dom";
 import { setPropertyStatus } from "../../apis/properties";
+import { updateUserRole } from "../../apis/users";
 
 export const getItem = (label, key, icon, children) => ({
   key,
@@ -37,6 +36,24 @@ export const PROPERTY_STATUS = [
   },
 ];
 
+export const USER_STATUS = [
+  {
+    key: 1,
+    value: "standard",
+    label: "Standard",
+  },
+  {
+    key: 2,
+    value: "moderator",
+    label: "Moderator",
+  },
+  {
+    key: 3,
+    value: "admin",
+    label: "Admin",
+  },
+];
+
 export const items = [
   getItem(
     "Listings",
@@ -46,26 +63,19 @@ export const items = [
     </Link>
   ),
   getItem(
-    "Option 2",
-    "2",
-    <Link to="/admin/option2">
-      <DesktopOutlined />
-    </Link>
-  ),
-  getItem(
     "Team",
     "3",
-    <Link to="/admin/team">
+    <Link to="/admin/members">
       <TeamOutlined />
     </Link>
   ),
-  getItem(
-    "Settings",
-    "4",
-    <Link to="/admin/settings">
-      <SettingOutlined />
-    </Link>
-  ),
+  // getItem(
+  //   "Settings",
+  //   "4",
+  //   <Link to="/admin/settings">
+  //     <SettingOutlined />
+  //   </Link>
+  // ),
 ];
 
 export const TABLE_ACTIONS = [
@@ -81,7 +91,7 @@ export const createTableActionsMenuItems = (id, statusChangeCallback) =>
     onClick: () => setPropertyStatus(id, label, statusChangeCallback),
   }));
 
-export const buildColumns = statusChangeCallback => [
+export const buildPropertiesColumns = statusChangeCallback => [
   {
     title: "Name",
     dataIndex: "name",
@@ -117,6 +127,46 @@ export const buildColumns = statusChangeCallback => [
     render: (_, { id }) => (
       <Dropdown
         menu={{ items: createTableActionsMenuItems(id, statusChangeCallback) }}
+        trigger={["click"]}
+      >
+        <a onClick={e => e.preventDefault()}>
+          <MoreOutlined />
+        </a>
+      </Dropdown>
+    ),
+  },
+];
+
+export const USER_ACTIONS = [
+  { label: "Standard", value: "standard" },
+  { label: "Moderator", value: "moderator" },
+  { label: "Admin", value: "admin" },
+];
+
+export const createUserAction = (id, successCallback) =>
+  USER_ACTIONS.map(({ label, value }) => ({
+    key: label,
+    label,
+    onClick: () => updateUserRole(id, value, successCallback),
+  }));
+
+export const buildUsersColumns = successCallback => [
+  {
+    title: "Name",
+    dataIndex: "name",
+    key: "name",
+  },
+  {
+    title: "Email",
+    dataIndex: "email",
+    key: "email",
+  },
+  {
+    title: "Actions",
+    key: "actions",
+    render: (_, { id }) => (
+      <Dropdown
+        menu={{ items: createUserAction(id, successCallback) }}
         trigger={["click"]}
       >
         <a onClick={e => e.preventDefault()}>

@@ -1,9 +1,9 @@
 import React from "react";
 import { UserOutlined } from "@ant-design/icons";
 import { Dropdown } from "antd";
-import { auth } from "../firebase";
 import { signOut } from "firebase/auth";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { auth } from "../firebase";
 import {
   getFromLocalStorage,
   removeFromLocalStorage,
@@ -17,7 +17,18 @@ const items = [
   {
     key: "AdminDashboard",
     label: <Link to="/admin">Admin Dashboard</Link>,
-    disabled: JSON.parse(getFromLocalStorage("loggedInUser")?getFromLocalStorage("loggedInUser"):"{\"role\":\"standard\"}").role === "admin"?false:true,
+    disabled: !(
+      JSON.parse(
+        getFromLocalStorage("loggedInUser")
+          ? getFromLocalStorage("loggedInUser")
+          : '{"role":"standard"}'
+      ).role === "admin" ||
+      JSON.parse(
+        getFromLocalStorage("loggedInUser")
+          ? getFromLocalStorage("loggedInUser")
+          : '{"role":"standard"}'
+      ).role === "moderator"
+    ),
   },
   {
     key: "MyAccount",
@@ -31,7 +42,6 @@ const items = [
 ];
 
 const AvatarMenu = () => {
-  const navigate = useNavigate()
   const invokeGoogleSignOut = () => {
     signOut(auth)
       .then(() => {
@@ -45,16 +55,20 @@ const AvatarMenu = () => {
       });
   };
 
-  const handleDropdownItemClick = (event) => {
-    if(event.key === "Logout") {
+  const handleDropdownItemClick = event => {
+    if (event.key === "Logout") {
       invokeGoogleSignOut();
     }
   };
 
-return <>
-  <Dropdown menu={{ onClick: handleDropdownItemClick, items: items }} trigger={["click"]} className="z-50">
-    <UserOutlined />
-  </Dropdown>
-  </>
+  return (
+    <Dropdown
+      className="z-50"
+      menu={{ onClick: handleDropdownItemClick, items }}
+      trigger={["click"]}
+    >
+      <UserOutlined />
+    </Dropdown>
+  );
 };
 export default AvatarMenu;
