@@ -6,16 +6,17 @@ import {
   MoreOutlined,
   CloseCircleOutlined,
 } from "@ant-design/icons";
-import { Tag, Dropdown, Button } from "antd";
+import { Tag, Dropdown } from "antd";
 import { Link } from "react-router-dom";
 import { setPropertyStatus } from "../../apis/properties";
 import { updateUserRole } from "../../apis/users";
 
-export const getItem = (label, key, icon, children) => ({
+export const getItem = (label, key, icon, path, children) => ({
   key,
   icon,
   children,
   label,
+  path,
 });
 
 export const PROPERTY_STATUS = [
@@ -60,14 +61,16 @@ export const items = [
     "1",
     <Link to="/admin">
       <BarChartOutlined />
-    </Link>
+    </Link>,
+    "/admin"
   ),
   getItem(
     "Team",
-    "3",
+    "2",
     <Link to="/admin/members">
       <TeamOutlined />
-    </Link>
+    </Link>,
+    "/admin/members"
   ),
   // getItem(
   //   "Settings",
@@ -116,7 +119,7 @@ export const buildPropertiesColumns = statusChangeCallback => [
 
       return (
         <Tag color={color} key={type}>
-          {type.toUpperCase()}
+          {type?.toUpperCase()}
         </Tag>
       );
     },
@@ -162,7 +165,7 @@ export const buildUsersColumns = successCallback => [
     key: "email",
   },
   {
-    title: "Actions",
+    title: "Assign Roles",
     key: "actions",
     render: (_, { id }) => (
       <Dropdown
@@ -202,4 +205,15 @@ export const properties = [
     tag: "isRent",
     status: "pending",
   },
+];
+
+export const ZIPCODES = [
+  "1234",
+  "10001",
+  "10002",
+  "10003",
+  "10004",
+  "10005",
+  "10006",
+  "10007",
 ];

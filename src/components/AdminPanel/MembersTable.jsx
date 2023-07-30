@@ -3,6 +3,7 @@ import { Table as AntdTable, Spin } from "antd";
 import { useQueryClient } from "@tanstack/react-query";
 import { useFetchUsers } from "../../hooks/useUsersApi";
 import { buildUsersColumns } from "./constants";
+import ExpandedRowComponent from "./ExpandedRowComponent";
 
 const MembersTable = ({ searchParams }) => {
   const queryClient = useQueryClient();
@@ -42,6 +43,10 @@ const MembersTable = ({ searchParams }) => {
       className="mt-4"
       columns={buildUsersColumns(successCallback)}
       dataSource={buildFilteredData(data)}
+      expandable={{
+        expandedRowRender: record => <ExpandedRowComponent record={record} />,
+        rowExpandable: record => record.role !== "standard",
+      }}
     />
   );
 };
