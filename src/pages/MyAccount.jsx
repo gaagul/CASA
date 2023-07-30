@@ -1,18 +1,44 @@
 import React, { useEffect, useState } from "react";
 import { Layout } from "antd";
 import { useSearchParams } from "react-router-dom";
-import Sidebar from "../components/AdminPanel/Sidebar";
-import Header from "../components/AdminPanel/Header";
-import Table from "../components/AdminPanel/Table";
-import { PROPERTY_STATUS } from "../components/AdminPanel/constants";
+import Header from "../components/MyAccount/Header";
+import Table from "../components/MyAccount/Table";
+import { PROPERTY_STATUS } from "../components/MyAccount/constants";
+import { UserDetails } from "../components/MyAccount/UserDetails";
+import Title from "antd/es/typography/Title";
 
 const MyAccount = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [activeStatus, setActiveStatus] = useState(PROPERTY_STATUS[0]);
+    const [searchParams, setSearchParams] = useSearchParams();
+    let user = {name: null, email: null, photoURL: null};
 
+    useEffect(() => {
+        searchParams.get("keyword");
+    
+        const newSearchParams = new URLSearchParams(searchParams);
+    
+        newSearchParams.set("status", activeStatus.value);
+        setSearchParams(newSearchParams);
+        
+      }, [activeStatus]);
   return (
     <Layout className="mt-12 min-h-screen w-screen">
-      
+      <div style={{ padding: 20 }}>
+      <Layout className="px-4">
+        
+        <Title level={5} style={{color: "#595959", fontWeight: "normal", marginTop: 20}}>User Details</Title>
+        <UserDetails />
+        
+        <Title level={5} style={{color: "#595959", fontWeight: "normal", marginTop: 20}}>User Properties</Title>
+        <Header
+          activeStatus={activeStatus}
+          searchParams={searchParams}
+          setActiveStatus={setActiveStatus}
+          setSearchParams={setSearchParams}
+        />
         <Table searchParams={searchParams} />
+      </Layout>
+      </div>
     </Layout>
   );
 };

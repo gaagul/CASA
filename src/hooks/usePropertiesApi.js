@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchAllProperties, fetchPropertyById, fetchApprovedProperties, fetchFeaturedProperties, getPropertiesWithMatchingZipcodes } from "../apis/properties";
+import { fetchAllProperties, fetchPropertyById, fetchApprovedProperties, fetchFeaturedProperties, getPropertiesWithMatchingZipcodes, getPropertiesByUserId } from "../apis/properties";
 
 const STALE_TIME = 100_000;
 const QUERY_KEYS = {
@@ -7,7 +7,8 @@ const QUERY_KEYS = {
   PROPERTY_BY_ID: "propertyById",
   APPROVED_PROPERTIES: "approvedProperties",
   FEATURED_PROPERTIES: "featuredProperties",
-  MATCH_BY_ZIPCODES: "getPropetiesMatchedByZipcode"
+  MATCH_BY_ZIPCODES: "getPropetiesMatchedByZipcode",
+  PROPERTIES_OF_A_USER: "getPropertiesOfAUser"
 };
 
 const useFetchProperties = () =>
@@ -39,4 +40,9 @@ useQuery([QUERY_KEYS.MATCH_BY_ZIPCODES], () => getPropertiesWithMatchingZipcodes
   staleTime: STALE_TIME,
 });
 
-export { useFetchProperties, useFetchPropertyById, useFetchApprovedProperties, useFetchFeaturedAssets, useGetPropertiesWithMatchingZipcodes };
+const useGetPropertiesByUserId = (userId) => 
+useQuery([QUERY_KEYS.PROPERTIES_OF_A_USER], () => getPropertiesByUserId(userId), {
+  staleTime: STALE_TIME,
+});
+
+export { useFetchProperties, useFetchPropertyById, useFetchApprovedProperties, useFetchFeaturedAssets, useGetPropertiesWithMatchingZipcodes, useGetPropertiesByUserId };

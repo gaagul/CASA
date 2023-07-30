@@ -7,6 +7,7 @@ import {
   query,
   setDoc,
   updateDoc,
+  deleteDoc,
   where
 } from "firebase/firestore";
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
@@ -52,7 +53,10 @@ const createProperty = async propertyInfo => {
     await createZipcode(propertyInfo.zipcode);
   return propertyResponse;
 }
-  
+
+const deletePropertyById = async (propertyId) => {
+  return await deleteDoc(doc(db, "properties", propertyId)).then(response=>{console.log("Successfully Deleted"+propertyId)}).catch(error=>{throw error});
+}
 
 const fetchUserById = async uid =>
   await getDoc(doc(db, "users", uid))
@@ -114,6 +118,29 @@ const uploadImageAsset = async thumbURL => {
   return downloadURL;
 };
 
+const getPropertiesByUserId = async (uid) => {
+  try {
+    const propertiesRef = collection(db, 'properties');
+
+    // Query for properties where the uid matches the given parameter
+    const querySnapshot = await getDocs(query(propertiesRef, where('userId', '==', uid)));
+
+    // Extract and return the property data
+    const properties = [];
+    querySnapshot.forEach((propertyDoc) => {
+      properties.push({
+        id: propertyDoc.id,
+        ...propertyDoc.data(),
+      });
+    });
+
+    return properties;
+  } catch (error) {
+    console.error('Error fetching properties:', error);
+    return [];
+  }
+}
+
 const getPropertiesWithMatchingZipcodes = async userId => {
   try {
     // Step 1: Get the user document using the user ID
@@ -154,5 +181,7 @@ export {
   createNewUserWithRole,
   uploadImageAsset,
   getImageURL,
-  getPropertiesWithMatchingZipcodes
+  getPropertiesWithMatchingZipcodes,
+  getPropertiesByUserId,
+  deletePropertyById
 };
