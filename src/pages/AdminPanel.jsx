@@ -1,36 +1,57 @@
-import React, { useEffect, useState } from "react";
-import { Layout } from "antd";
-import { useSearchParams } from "react-router-dom";
+import React, { useState } from "react";
+import { Layout, Spin } from "antd";
+import { Outlet, Link } from "react-router-dom";
+import AntdLink from "antd/es/typography/Link";
+import { isEmpty } from "ramda";
+import { useUser } from "../hooks/useUser";
 import Sidebar from "../components/AdminPanel/Sidebar";
-import Header from "../components/AdminPanel/Header";
-import Table from "../components/AdminPanel/Table";
-import { PROPERTY_STATUS } from "../components/AdminPanel/constants";
 
 const AdminPanel = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [activeStatus, setActiveStatus] = useState(PROPERTY_STATUS[0]);
-  const [searchParams, setSearchParams] = useSearchParams();
 
-  useEffect(() => {
-    searchParams.get("keyword");
+  const { isLoading, userDetails } = useUser();
 
-    const newSearchParams = new URLSearchParams(searchParams);
+  if (isLoading) {
+    return (
+      <Spin className="flex h-full w-full flex-col items-center justify-around" />
+    );
+  }
 
-    newSearchParams.set("status", activeStatus.value);
-    setSearchParams(newSearchParams);
-  }, [activeStatus]);
+  if (isEmpty(userDetails)) {
+    return (
+      <div className="flex h-screen flex-col items-center justify-center gap-8">
+        <h1 className="text-4xl">You are not authorized to view this page</h1>
+        <AntdLink>
+          <Link to="/">Go back to home page</Link>
+        </AntdLink>
+      </div>
+    );
+  }
+
+  if (userDetails?.role === "standard") {
+    return (
+      <div className="flex h-screen flex-col items-center justify-center gap-8">
+        <h1 className="text-4xl">You are not authorized to view this page</h1>
+        <AntdLink>
+          <Link to="/">Go back to home page</Link>
+        </AntdLink>
+      </div>
+    );
+  }
 
   return (
     <Layout className="mt-12 min-h-screen w-screen">
-      <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
+      <Sidebar
+        isOpen={isSidebarOpen}
+        setIsOpen={setIsSidebarOpen}
+        userDetails={userDetails}
+      />
       <Layout className="px-4">
-        <Header
-          activeStatus={activeStatus}
-          searchParams={searchParams}
-          setActiveStatus={setActiveStatus}
-          setSearchParams={setSearchParams}
+        <Outlet
+          context={{
+            userDetails,
+          }}
         />
-        <Table searchParams={searchParams} />
       </Layout>
     </Layout>
   );

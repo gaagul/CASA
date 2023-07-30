@@ -2,7 +2,6 @@ import React from "react";
 import { MenuUnfoldOutlined } from "@ant-design/icons";
 import { Layout, Tabs, Input, Button } from "antd";
 import { isEmpty } from "ramda";
-import { PROPERTY_STATUS } from "./constants";
 
 const { Header } = Layout;
 const { Search } = Input;
@@ -12,6 +11,7 @@ const AntdHeader = ({
   setActiveStatus,
   searchParams,
   setSearchParams,
+  tabItems,
 }) => (
   <Header className="mt-6 flex items-center justify-between bg-white">
     <div className="flex items-center gap-4">
@@ -22,10 +22,10 @@ const AntdHeader = ({
       />
       <Tabs
         defaultActiveKey={activeStatus.key}
-        items={PROPERTY_STATUS}
+        items={tabItems}
         size="small"
         onChange={key => {
-          setActiveStatus(PROPERTY_STATUS.find(obj => obj.key === key));
+          setActiveStatus(tabItems.find(obj => obj.key === key));
         }}
       />
     </div>

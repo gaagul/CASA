@@ -8,7 +8,7 @@ import {
   setDoc,
   updateDoc,
   deleteDoc,
-  where
+  where,
 } from "firebase/firestore";
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import randomString from "random-string";
@@ -29,19 +29,23 @@ const fetchPropertyById = async id =>
       throw error;
     });
 
-const fetchApprovedProperties = async () => 
-    await getDocs(query(collection(db, "properties"), where("status", "==", "approved")))
-      .then(response => response)
-      .catch(error => {
-        throw error;
-      });
+const fetchApprovedProperties = async () =>
+  await getDocs(
+    query(collection(db, "properties"), where("status", "==", "approved"))
+  )
+    .then(response => response)
+    .catch(error => {
+      throw error;
+    });
 
-const fetchFeaturedProperties = async () => 
-await getDocs(query(collection(db, "properties"), where("isFeatured", "==", true)))
-  .then(response => response)
-  .catch(error => {
-    throw error;
-  })
+const fetchFeaturedProperties = async () =>
+  await getDocs(
+    query(collection(db, "properties"), where("isFeatured", "==", true))
+  )
+    .then(response => response)
+    .catch(error => {
+      throw error;
+    });
 
 const createProperty = async propertyInfo => {
   let propertyResponse = await addDoc(collection(db, "properties"), propertyInfo)
@@ -78,14 +82,13 @@ const setPropertyStatus = async (
   else if (status === "Pending") updatedStatus = "pending";
 
   if (updatedStatus !== currentStatus) {
-
     await updateDoc(
       doc(db, property._key.path.segments[0], property._key.path.segments[1]),
       { status: updatedStatus }
     );
     successCallback();
+
     return true;
-    
   }
   throw "Nothing to update as current state same as the update state.";
 };
