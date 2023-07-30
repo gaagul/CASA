@@ -1,7 +1,10 @@
 import React from "react";
 import { Table as AntdTable, Spin } from "antd";
 import { useQueryClient } from "@tanstack/react-query";
-import { useGetPropertiesWithMatchingZipcodes } from "../../hooks/usePropertiesApi";
+import {
+  useFetchProperties,
+  useGetPropertiesWithMatchingZipcodes,
+} from "../../hooks/usePropertiesApi";
 import { buildPropertiesColumns } from "./constants";
 
 const PropertiesTable = ({ searchParams, userDetails }) => {
@@ -31,10 +34,12 @@ const PropertiesTable = ({ searchParams, userDetails }) => {
     return filteredData;
   };
 
-  const { data = [], isFetching } = useGetPropertiesWithMatchingZipcodes(
-    userDetails?.uid,
-    { enabled: !!userDetails?.uid }
-  );
+  const { data = [], isFetching } =
+    userDetails?.role === "admin"
+      ? useFetchProperties()
+      : useGetPropertiesWithMatchingZipcodes(userDetails?.uid, {
+          enabled: !!userDetails?.uid && userDetails?.role === "moderator",
+        });
 
   if (isFetching) {
     return (

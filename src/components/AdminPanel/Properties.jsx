@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useOutletContext } from "react-router-dom";
-import { useGetPropertiesWithMatchingZipcodes } from "../../hooks/usePropertiesApi";
 
 import { PROPERTY_STATUS } from "./constants";
 import Header from "./Header";
@@ -10,11 +9,6 @@ const Properties = () => {
   const [activeStatus, setActiveStatus] = useState(PROPERTY_STATUS[0]);
   const [searchParams, setSearchParams] = useSearchParams();
   const { userDetails = {} } = useOutletContext();
-
-  const { data: properties = [] } = useGetPropertiesWithMatchingZipcodes(
-    userDetails?.uid,
-    { enabled: !!userDetails?.uid }
-  );
 
   useEffect(() => {
     searchParams.get("keyword");

@@ -27,7 +27,7 @@ const MembersTable = ({ searchParams }) => {
     return filteredData;
   };
 
-  const successCallback = () => queryClient.invalidateQueries("propertiesList");
+  const successCallback = () => queryClient.invalidateQueries("membersList");
 
   const { data, isFetching } = useFetchUsers();
 

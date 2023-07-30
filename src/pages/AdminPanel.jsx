@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Layout, Spin } from "antd";
-import { Outlet } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
+import AntdLink from "antd/es/typography/Link";
 import { isEmpty } from "ramda";
 import { useUser } from "../hooks/useUser";
 import Sidebar from "../components/AdminPanel/Sidebar";
@@ -17,16 +18,34 @@ const AdminPanel = () => {
   }
 
   if (isEmpty(userDetails)) {
-    return <div className="mt-16">YOU ARE UNAUTHORIZED</div>;
+    return (
+      <div className="flex h-screen flex-col items-center justify-center gap-8">
+        <h1 className="text-4xl">You are not authorized to view this page</h1>
+        <AntdLink>
+          <Link to="/">Go back to home page</Link>
+        </AntdLink>
+      </div>
+    );
   }
 
-  // if (userDetails?.role === "standard") {
-  //   return <div className="mt-16">YOU ARE UNAUTHORIZED</div>;
-  // }
+  if (userDetails?.role === "standard") {
+    return (
+      <div className="flex h-screen flex-col items-center justify-center gap-8">
+        <h1 className="text-4xl">You are not authorized to view this page</h1>
+        <AntdLink>
+          <Link to="/">Go back to home page</Link>
+        </AntdLink>
+      </div>
+    );
+  }
 
   return (
     <Layout className="mt-12 min-h-screen w-screen">
-      <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
+      <Sidebar
+        isOpen={isSidebarOpen}
+        setIsOpen={setIsSidebarOpen}
+        userDetails={userDetails}
+      />
       <Layout className="px-4">
         <Outlet
           context={{

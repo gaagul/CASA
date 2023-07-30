@@ -9,6 +9,7 @@ import {
 import { Tag, Dropdown, Button } from "antd";
 import { Link } from "react-router-dom";
 import { setPropertyStatus } from "../../apis/properties";
+import { updateUserRole } from "../../apis/users";
 
 export const getItem = (label, key, icon, children) => ({
   key,
@@ -136,6 +137,19 @@ export const buildPropertiesColumns = statusChangeCallback => [
   },
 ];
 
+export const USER_ACTIONS = [
+  { label: "Standard", value: "standard" },
+  { label: "Moderator", value: "moderator" },
+  { label: "Admin", value: "admin" },
+];
+
+export const createUserAction = (id, successCallback) =>
+  USER_ACTIONS.map(({ label, value }) => ({
+    key: label,
+    label,
+    onClick: () => updateUserRole(id, value, successCallback),
+  }));
+
 export const buildUsersColumns = successCallback => [
   {
     title: "Name",
@@ -147,11 +161,20 @@ export const buildUsersColumns = successCallback => [
     dataIndex: "email",
     key: "email",
   },
-  // {
-  //   title: "Action",
-  //   key: "actions",
-  //   render: (_, { id }) => <Button>Delete</Button>,
-  // },
+  {
+    title: "Actions",
+    key: "actions",
+    render: (_, { id }) => (
+      <Dropdown
+        menu={{ items: createUserAction(id, successCallback) }}
+        trigger={["click"]}
+      >
+        <a onClick={e => e.preventDefault()}>
+          <MoreOutlined />
+        </a>
+      </Dropdown>
+    ),
+  },
 ];
 
 export const properties = [

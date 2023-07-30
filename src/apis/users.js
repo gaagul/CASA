@@ -1,4 +1,4 @@
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
 const fetchAllUsers = async () =>
@@ -8,13 +8,14 @@ const fetchAllUsers = async () =>
       throw error;
     });
 
-const updateUserRole = async (userId, updatedRole) => {
+const updateUserRole = async (userId, updatedRole, successCallback) => {
   if (["standard", "moderator", "admin"].includes(updatedRole)) {
     const usersCollection = doc(db, "users", userId);
 
     try {
       // Update the role attribute in the user document
       await updateDoc(usersCollection, { role: updatedRole });
+      successCallback();
       console.log("User role successfully updated!");
     } catch (error) {
       console.error("Error updating user role:", error);

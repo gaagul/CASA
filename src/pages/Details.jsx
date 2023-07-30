@@ -7,11 +7,13 @@ import SaleDetails from "../components/Details/SaleDetails";
 import PropertyDetails from "../components/Details/PropertyDetails";
 import Description from "../components/Details/Description";
 import { useFetchPropertyById } from "../hooks/usePropertiesApi";
+import { useFetchUserById } from "../hooks/useUsersApi";
 
 const Details = () => {
   const { id } = useParams();
   const { data, isLoading } = useFetchPropertyById(id);
   const property = data?.data();
+  const { data: userData } = useFetchUserById(property?.userId);
 
   if (isLoading) {
     return (
@@ -24,7 +26,7 @@ const Details = () => {
       <Header house={property} />
       <div className="mt-8 flex max-h-96 justify-between gap-8">
         <Assets imageList={property?.imageList || []} />
-        <SaleDetails house={property} />
+        <SaleDetails house={property} ownerDetails={userData?.data()} />
       </div>
       <PropertyDetails house={property} />
       <Description house={property} />
