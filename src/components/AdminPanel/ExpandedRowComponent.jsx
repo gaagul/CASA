@@ -1,12 +1,23 @@
 import React, { useState } from "react";
 import { Select, Button } from "antd";
 import { ZIPCODES } from "./constants";
+import { useFetchZipcodes } from "../../hooks/useZipcodesApi";
+import { updateUserWithZipcodes } from "../../apis/users";
 
-const ExpandedRowComponent = ({ record }) => {
+const ExpandedRowComponent = ({ record, successCallback }) => {
   const [selectedZipcodes, setSelectedZipcodes] = useState(
     record?.listOfZipcodes
   );
 
+  const handleSave = ()=>{
+    updateUserWithZipcodes(record.uid, selectedZipcodes);
+    console.log("Successfully updated user zipcode list.");
+    successCallback();
+  }
+
+  const {data, isLoading} = useFetchZipcodes();
+  
+  if(!isLoading)
   return (
     <div className="flex gap-8">
       <Select
@@ -16,7 +27,7 @@ const ExpandedRowComponent = ({ record }) => {
         placeholder="Assigned Zipcodes"
         style={{ width: "100%" }}
         value={selectedZipcodes}
-        options={ZIPCODES.map(zipcode => ({
+        options={data.map(zipcode => ({
           label: zipcode,
           value: zipcode,
         }))}
@@ -24,7 +35,7 @@ const ExpandedRowComponent = ({ record }) => {
           setSelectedZipcodes(value);
         }}
       />
-      <Button type="primary" onClick={() => console.log(selectedZipcodes)}>
+      <Button type="primary" onClick={handleSave}>
         Save
       </Button>
       <Button onClick={() => setSelectedZipcodes(record?.listOfZipcodes)}>

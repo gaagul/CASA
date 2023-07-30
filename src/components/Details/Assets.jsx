@@ -18,7 +18,7 @@ const Assets = ({ imageList }) => {
       <Carousel ref={carouselRef}>
         {imageList.map(asset => (
           <div key={asset.id}>
-            <img alt="Home" src={asset || ""} />
+            <img alt="Home" className="w-full object-cover" src={asset || ""} />
           </div>
         ))}
       </Carousel>

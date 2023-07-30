@@ -1,4 +1,5 @@
 import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
+import {getFromLocalStorage} from "../hooks/useLocalStorage"
 import { db } from "../firebase";
 
 const fetchAllUsers = async () =>
@@ -27,4 +28,23 @@ const updateUserRole = async (userId, updatedRole, successCallback) => {
   }
 };
 
-export { fetchAllUsers, updateUserRole };
+const updateUserWithZipcodes = async (userId, listOfZipcodes) => {
+  try {
+    if (!Array.isArray(listOfZipcodes)) {
+      throw new Error('Invalid zipcodes parameter. It should be an array.');
+    }
+    
+    const userRef = doc(db, 'users', userId);
+    await updateDoc(userRef, {
+      listOfZipcodes: listOfZipcodes
+    });
+
+    console.log('listOfZipcodes updated successfully!');
+    return true;
+  } catch (error) {
+    console.error('Error updating user document:', error);
+    return false;
+  }
+}
+
+export { fetchAllUsers, updateUserRole, updateUserWithZipcodes };

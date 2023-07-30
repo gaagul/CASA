@@ -44,7 +44,7 @@ const MembersTable = ({ searchParams }) => {
       columns={buildUsersColumns(successCallback)}
       dataSource={buildFilteredData(data)}
       expandable={{
-        expandedRowRender: record => <ExpandedRowComponent record={record} />,
+        expandedRowRender: record => <ExpandedRowComponent record={record} successCallback={successCallback}/>,
         rowExpandable: record => record.role !== "standard",
       }}
     />
