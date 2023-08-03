@@ -2,7 +2,6 @@ import React from "react";
 import { Route, Routes, BrowserRouter, Navigate } from "react-router-dom";
 import Login from "components/Login";
 import Signup from "components/Signup";
-import { useUser } from "hooks/useUser";
 import AdminPanel from "./pages/AdminPanel";
 import Home from "./pages/Home";
 import ListingPage from "./pages/ListingPage";
@@ -27,14 +26,15 @@ const Main = () => {
             <Route element={<Form />} path="/add" />
             <Route element={<Login />} path="/login" />
             <Route element={<Signup />} path="/signup" />
-            <Route element={<AdminPanel />} path="/admin">
-              <Route element={<Properties />} path="" />
-              <Route element={<Members />} path="members" />
-            </Route>
             {isLoggedIn ? (
               <>
                 <Route element={<ListingPage />} path="/listing" />
                 <Route exact element={<Details />} path="/details" />
+                <Route element={<AdminPanel />} path="/admin">
+                  <Route element={<Properties />} path="" />
+                  <Route element={<Members />} path="members" />
+                  <Route element={<Details />} path="details/:id" />
+                </Route>
               </>
             ) : (
               <>
@@ -45,6 +45,10 @@ const Main = () => {
                 <Route
                   element={<LoginRedirect from="/details" />}
                   path="/details"
+                />
+                <Route
+                  element={<LoginRedirect from="/admin" />}
+                  path="/admin"
                 />
               </>
             )}

@@ -7,6 +7,7 @@ import {
   CloseCircleOutlined,
 } from "@ant-design/icons";
 import { Tag, Dropdown } from "antd";
+import AntdLink from "antd/es/typography/Link";
 import { Link } from "react-router-dom";
 import { setPropertyStatus } from "../../apis/properties";
 import { updateUserRole } from "../../apis/users";
@@ -99,6 +100,13 @@ export const buildPropertiesColumns = statusChangeCallback => [
     title: "Name",
     dataIndex: "name",
     key: "name",
+    render: (_, { id, name }) => (
+      <AntdLink>
+        <Link target="_blank" to={`/admin/details/${id}`}>
+          {name}
+        </Link>
+      </AntdLink>
+    ),
   },
   {
     title: "Price",
