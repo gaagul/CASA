@@ -67,7 +67,7 @@ const AvatarMenu = () => {
       menu={{ onClick: handleDropdownItemClick, items }}
       trigger={["click"]}
     >
-      <UserOutlined />
+      <UserOutlined style={{color: 'white'}}/>
     </Dropdown>
   );
 };
