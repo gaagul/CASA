@@ -47,6 +47,7 @@ const PropertiesTable = ({ searchParams, userDetails }) => {
     );
   }
 
+  console.log("Data",data);
   return (
     <AntdTable
       className="mt-4"

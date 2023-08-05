@@ -13,7 +13,7 @@ const AntdHeader = ({
   setSearchParams,
   tabItems,
 }) => (
-  <Header className="mt-6 flex items-center justify-between bg-white">
+  <Header className="mt-6 flex items-center justify-between bg-white rounded-lg">
     <div className="flex items-center gap-4">
       <Button
         className="-ml-10"

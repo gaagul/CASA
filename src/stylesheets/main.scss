@@ -8,6 +8,10 @@
 @import "./_home-page.scss";
 @import "./_slick.scss";
 
+body{
+    overflow-x: hidden;
+}
+
 .primary-text {
     color: #6941c6 !important;
 }

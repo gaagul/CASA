@@ -11,6 +11,7 @@ import AntdLink from "antd/es/typography/Link";
 import { Link } from "react-router-dom";
 import { setPropertyStatus } from "../../apis/properties";
 import { updateUserRole } from "../../apis/users";
+import FavoriteButton from '../FavoriteButton';
 
 export const getItem = (label, key, icon, path, children) => ({
   key,
@@ -131,6 +132,14 @@ export const buildPropertiesColumns = statusChangeCallback => [
         </Tag>
       );
     },
+  },
+  {
+    title: "Featured",
+    key: "isFeatured",
+    dataIndex: "isFeatured",
+    render: (_, { id, isFeatured }) => (
+      <FavoriteButton id={id} isFeatured={isFeatured}/>
+    ),
   },
   {
     title: "Actions",
