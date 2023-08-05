@@ -31,7 +31,7 @@ const Nav = () => {
             <div className="nav-wrapper" style={active?stylesForSolidNav:null}>
                 <div className="nav-centering-wrapper" style={active?stylesForUncenteringNav:null}>
                     <Space direction='horizontal' align='center' style={{ justifyContent: 'space-between', width: '100%' }}>
-                        <Title level={4}>casa.</Title>
+                        <Link to="/"> <Title level={4}>casa.</Title></Link>
                         {isLoggedIn ? (
                             <AvatarMenu />
                         ) : (

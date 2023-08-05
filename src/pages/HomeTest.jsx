@@ -12,7 +12,8 @@ import {
 import { MessageOutlined } from "@ant-design/icons";
 import Nav from "../components/Nav";
 import { createQueryString } from "../utils";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link as RouterLink } from "react-router-dom";
+import AnchorLink from 'react-anchor-link-smooth-scroll'
 import PopularProperties from "../components/PopularProperties";
 
 const { Title, Paragraph, Text, Link } = Typography;
@@ -184,7 +185,7 @@ const HomeTest = () => {
               perfect house for you.
             </Text>
             <div className="get-started-button-wrapper">
-              <Button size="large">Get Started</Button>
+              <RouterLink to="/listing"><Button size="large">Get Started</Button></RouterLink>
             </div>
           </div>
         </div>
@@ -200,13 +201,13 @@ const HomeTest = () => {
               <Space size="large">
                 <Space direction="vertical">
                   <Title level={5}>About</Title>
-                  <Link>Our Values</Link>
-                  <Link>Contact Us</Link>
+                  <AnchorLink href='#service-values'><Link>Our Values</Link></AnchorLink>
+                  <AnchorLink href='#contact-us'><Link>Contact Us</Link></AnchorLink>
                 </Space>
                 <Space direction="vertical">
                   <Title level={5}>Explore</Title>
-                  <Link>Login</Link>
-                  <Link>Find properties</Link>
+                  <RouterLink to="/login"><Link>Login</Link></RouterLink>
+                  <RouterLink to="/listing"><Link>Find properties</Link></RouterLink>
                 </Space>
               </Space>
             </div>
