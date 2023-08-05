@@ -4,6 +4,7 @@ import { dec, inc } from "ramda";
 import { Formik, Form as FormikForm } from "formik";
 import { Container } from "@mui/material";
 import { updateDoc, doc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 import Steps from "./Steps";
 import Basic from "./Basic";
 import Assets from "./Assets";
@@ -12,7 +13,6 @@ import { PROPERTY_FORM_INITIAL_VALUES, VALIDATION_SCHEMA } from "./constants";
 import { getFromLocalStorage } from "../../hooks/useLocalStorage";
 import { createProperty, uploadImageAsset } from "../../apis/properties";
 import { db } from "../../firebase";
-import { useNavigate } from "react-router-dom";
 
 const Form = () => {
   const navigate = useNavigate();
@@ -114,9 +114,9 @@ const Form = () => {
               <Button onClick={previousStep}>Previous</Button>
               {currentStep === 2 ? (
                 <Button
-                  loading={isSubmitting}
                   disabled={isSubmitting}
                   htmlType="submit"
+                  loading={isSubmitting}
                 >
                   Submit
                 </Button>

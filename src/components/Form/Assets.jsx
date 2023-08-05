@@ -60,7 +60,7 @@ const Assets = ({ assets, setAssets }) => {
   return (
     <div className="rounded bg-white p-4 pb-8 shadow">
       <Title className="mb-4" level={2}>
-        Assets
+        Step 2
       </Title>
       <div className="flex flex-col gap-2 p-4">
         <Typography>Cover Image</Typography>
