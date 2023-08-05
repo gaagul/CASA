@@ -7,7 +7,7 @@ const { Title } = Typography;
 const Basic = () => (
   <div className="rounded bg-white p-4 pb-8 shadow">
     <Title className="mb-4" level={2}>
-      Basic
+      Step 1
     </Title>
     <div className="grid grid-cols-2 gap-4">
       <div>

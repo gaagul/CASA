@@ -15,7 +15,7 @@ const PopularProperties = () => {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: properties.length > 4 ? 4 : properties.length,
     slidesToScroll: 1,
     arrows: false,
     autoplay: true,
