@@ -13,6 +13,7 @@ import Testpage from "./pages/Test";
 import MyAccount from "./pages/MyAccount";
 import Members from "./components/AdminPanel/Members";
 import Properties from "./components/AdminPanel/Properties";
+import HomeTest from "./pages/HomeTest";
 
 const Main = () => {
   const isLoggedIn = localStorage.getItem("isLoggedIn");
@@ -21,7 +22,7 @@ const Main = () => {
     <div className="h-screen w-screen">
       <React.StrictMode>
         <BrowserRouter>
-          <Navbar />
+          {/* <Navbar /> */}
           <Routes>
             <Route element={<Details />} path="/listing/:id" />
             <Route element={<Form />} path="/add" />
@@ -50,6 +51,7 @@ const Main = () => {
             )}
             <Route element={<Home />} path="/" />
             <Route element={<Testpage />} path="/test" />
+            <Route element={<HomeTest />} path="/home-test" />
             <Route element={<MyAccount />} path="/account" />
           </Routes>
         </BrowserRouter>
