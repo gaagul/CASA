@@ -9,6 +9,10 @@ import {
   removeFromLocalStorage,
 } from "../hooks/useLocalStorage";
 
+const loggedInUserJSON =
+  getFromLocalStorage("loggedInUser") || '{"role":"standard"}';
+const loggedInUserRole = JSON.parse(loggedInUserJSON).role;
+
 const items = [
   {
     key: "AddListing",
@@ -17,18 +21,7 @@ const items = [
   {
     key: "AdminDashboard",
     label: <Link to="/admin">Admin Dashboard</Link>,
-    disabled: !(
-      JSON.parse(
-        getFromLocalStorage("loggedInUser")
-          ? getFromLocalStorage("loggedInUser")
-          : '{"role":"standard"}'
-      ).role === "admin" ||
-      JSON.parse(
-        getFromLocalStorage("loggedInUser")
-          ? getFromLocalStorage("loggedInUser")
-          : '{"role":"standard"}'
-      ).role === "moderator"
-    ),
+    show: loggedInUserRole === "admin" || loggedInUserRole === "moderator",
   },
   {
     key: "MyAccount",
@@ -39,7 +32,7 @@ const items = [
     danger: true,
     label: "Logout",
   },
-];
+].filter(item => item.show !== false);
 
 const AvatarMenu = () => {
   const invokeGoogleSignOut = () => {
@@ -67,7 +60,7 @@ const AvatarMenu = () => {
       menu={{ onClick: handleDropdownItemClick, items }}
       trigger={["click"]}
     >
-      <UserOutlined style={{color: 'white'}}/>
+      <UserOutlined style={{ color: "white" }} />
     </Dropdown>
   );
 };

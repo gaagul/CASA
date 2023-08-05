@@ -87,7 +87,7 @@
     & img{
         border-radius: 20px;
     }
-    
+
     &::before {
         content: "";
         display: block;
@@ -103,7 +103,7 @@
         filter: blur(60px) saturate(2);
     }
 
-    
+
 }
 
 .service-values-centering-wrapper {
@@ -180,7 +180,7 @@
     border-radius: 30px;
     position: relative;
     padding: 20px;
-    
+
 
     & h1, span {
         color: white;
@@ -211,7 +211,7 @@
         color: #808CA2;
 
     }
-    
+
 }
 
 .footer-main-content {
@@ -222,4 +222,8 @@
     & h1{
         color: #1F3E72 !important;
     }
+}
+
+.heading-text-home {
+    color: var(--primary) !important;
 }
