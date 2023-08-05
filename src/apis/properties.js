@@ -150,6 +150,19 @@ const getPropertiesByUserId = async (uid) => {
   }
 }
 
+const updateIsFeaturedByPropertyId = async (propertyId, isFeaturedValue) => {
+  try {
+
+    const propertyRef = doc(db, 'properties', propertyId);
+    await updateDoc(propertyRef, {
+      isFeatured: isFeaturedValue
+    });
+    console.log(`Property with ID ${propertyId} has been updated. isFeatured: ${isFeaturedValue}`);
+  } catch (error) {
+    console.error('Error updating property:', error);
+  }
+};
+
 const getPropertiesWithMatchingZipcodes = async userId => {
   try {
     // Step 1: Get the user document using the user ID
@@ -192,5 +205,6 @@ export {
   getImageURL,
   getPropertiesWithMatchingZipcodes,
   getPropertiesByUserId,
-  deletePropertyById
+  deletePropertyById,
+  updateIsFeaturedByPropertyId
 };

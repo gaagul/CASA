@@ -26,9 +26,6 @@ const HomeTest = () => {
             colorPrimary: '#fa541c',
         },
     };
-
-  const [rentSwitch, setRentSwitch] = useState(true);
-
   const serviceValuesCollapseData = [
     {
       key: "1",
