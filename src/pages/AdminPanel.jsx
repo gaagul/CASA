@@ -40,13 +40,13 @@ const AdminPanel = () => {
   }
 
   return (
-    <Layout className="mt-12 min-h-screen w-screen">
+    <Layout className="mt-16 min-h-screen w-screen">
       <Sidebar
         isOpen={isSidebarOpen}
         setIsOpen={setIsSidebarOpen}
         userDetails={userDetails}
       />
-      <Layout className="px-4">
+      <Layout className="px-4 pr-8 ">
         <Outlet
           context={{
             userDetails,

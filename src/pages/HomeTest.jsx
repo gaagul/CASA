@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Typography, Switch, Input, Space, ConfigProvider, theme, Collapse, Card, Button } from 'antd';
 import { MessageOutlined } from '@ant-design/icons';
+import { createQueryString } from "../utils";
+import { useNavigate } from "react-router-dom";
 import Nav from '../components/Nav';
 
 const { Title, Paragraph, Text, Link } = Typography;
@@ -8,8 +10,8 @@ const { Search } = Input;
 
 
 const HomeTest = () => {
-
-    const [rentSwitch, setRentSwitch] = useState(true);
+    const navigate = useNavigate();
+    const [values, setValues] = useState({type: "rent", location: ""});
     const pageTheme = {
         token: {
             colorPrimary: '#fa541c',
@@ -34,7 +36,28 @@ const HomeTest = () => {
         },
     ];
 
-    const onSearch = (value) => console.log(value);
+    const handleSearch = values => {
+        // Filter keys with non-empty values
+        const searchParams = Object.keys(values).reduce((params, key) => {
+          if (values[key]) {
+            params[key] = values[key];
+          }
+    
+          return params;
+        }, {});
+    
+        // Check if the searchParams object is empty
+        const isEmpty = Object.keys(searchParams).length === 0;
+    
+        if (isEmpty) {
+          // If searchParams object is empty, navigate to '/listing' without query parameters
+          navigate("/listing");
+        } else {
+          const getQueryParams = createQueryString(searchParams);
+          navigate(`/listing?${getQueryParams}`);
+        }
+      };
+
     return (
         <>
             <ConfigProvider
@@ -54,19 +77,18 @@ const HomeTest = () => {
                             <Paragraph>Find a variety of properties that suit you hassle-free, forget all difficulties in finding the perfect home.</Paragraph>
                             <Space direction='horizontal' style={{ width: '100%', margin: '30px 0' }} size={20}>
                                 <Switch
-                                    checked={rentSwitch}
+                                    checked={values.type === "rent"}
                                     checkedChildren="Rent"
                                     unCheckedChildren="Sale"
-                                    onChange={() => {
-                                        setRentSwitch(!rentSwitch);
-                                    }}
+                                    onChange={e => setValues({ ...values, type: values.type==="rent"?"sale":"rent"})}
                                 />
                                 <Search
                                     placeholder="Search Location"
                                     allowClear
                                     enterButton="Search"
                                     size="large"
-                                    onSearch={onSearch}
+                                    onChange={e => setValues({ ...values, location: e.target.value })}
+                                    onSearch={() => handleSearch(values)}
                                     style={{ width: 500 }}
                                 />
                             </Space>

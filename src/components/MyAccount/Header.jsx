@@ -13,7 +13,7 @@ const AntdHeader = ({
   searchParams,
   setSearchParams,
 }) => (
-  <Header className="mt-2 flex items-center justify-between bg-white">
+  <Header className="mt-2 flex items-center justify-between bg-white rounded-lg">
     <div className="flex items-center gap-4">
       <Button
         className="-ml-10"

@@ -7,6 +7,10 @@
 @import "./_test-page.scss";
 @import "./_home-page.scss";
 
+body{
+    overflow-x: hidden;
+}
+
 .primary-text {
     color: #6941c6 !important;
 }

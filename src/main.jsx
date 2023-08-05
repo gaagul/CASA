@@ -7,6 +7,7 @@ import AdminPanel from "./pages/AdminPanel";
 import Home from "./pages/Home";
 import ListingPage from "./pages/ListingPage";
 import Navbar from "./components/Navbar";
+import Nav from "./components/Nav";
 import Form from "./components/Form";
 import Details from "./pages/Details";
 import Testpage from "./pages/Test";
@@ -22,12 +23,11 @@ const Main = () => {
     <div className="h-screen w-screen">
       <React.StrictMode>
         <BrowserRouter>
-          {/* <Navbar /> */}
+          <Nav />
           <Routes>
             <Route element={<Details />} path="/listing/:id" />
             <Route element={<Form />} path="/add" />
             <Route element={<Login />} path="/login" />
-            <Route element={<Signup />} path="/signup" />
             <Route element={<AdminPanel />} path="/admin">
               <Route element={<Properties />} path="" />
               <Route element={<Members />} path="members" />
@@ -49,9 +49,7 @@ const Main = () => {
                 />
               </>
             )}
-            <Route element={<Home />} path="/" />
-            <Route element={<Testpage />} path="/test" />
-            <Route element={<HomeTest />} path="/home-test" />
+            <Route element={<HomeTest />} path="/" />
             <Route element={<MyAccount />} path="/account" />
           </Routes>
         </BrowserRouter>
