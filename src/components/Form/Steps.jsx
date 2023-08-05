@@ -7,13 +7,13 @@ const Steps = ({ currentStep }) => (
     size="small"
     items={[
       {
-        title: "Basic",
+        title: "Step 1",
       },
       {
-        title: "Assets",
+        title: "Step 2",
       },
       {
-        title: "Additional info",
+        title: "Step 3",
       },
     ]}
   />

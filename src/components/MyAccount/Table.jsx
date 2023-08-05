@@ -13,7 +13,7 @@ const Table = ({ searchParams }) => {
     status: searchParams.get("status"),
   };
 
-  const statusChangeCallback = () =>
+  const deleteCallback = () =>
     queryClient.invalidateQueries("getPropertiesOfAUser");
 
   const buildFilteredData = data => {
@@ -42,7 +42,7 @@ const Table = ({ searchParams }) => {
   return (
     <AntdTable
       className="mt-4"
-      columns={buildColumns(statusChangeCallback)}
+      columns={buildColumns(deleteCallback)}
       dataSource={buildFilteredData(data)}
     />
   );

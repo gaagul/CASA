@@ -4,10 +4,10 @@ import {
   SettingOutlined,
   TeamOutlined,
   DesktopOutlined,
-  CheckOutlined,
   MoreOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
+import AntdLink from "antd/es/typography/Link";
 import { Tag, Dropdown } from "antd";
 import { Link } from "react-router-dom";
 import { deletePropertyById } from "../../apis/properties";
@@ -83,11 +83,18 @@ export const createTableActionsMenuItems = (id, statusChangeCallback) =>
     },
   }));
 
-export const buildColumns = statusChangeCallback => [
+export const buildColumns = deleteCallback => [
   {
     title: "Name",
     dataIndex: "name",
     key: "name",
+    render: (_, { id, name }) => (
+      <AntdLink>
+        <Link target="_blank" to={`/listing/${id}`}>
+          {name}
+        </Link>
+      </AntdLink>
+    ),
   },
   {
     title: "Price",
@@ -118,7 +125,7 @@ export const buildColumns = statusChangeCallback => [
     key: "actions",
     render: (_, { id }) => (
       <Dropdown
-        menu={{ items: createTableActionsMenuItems(id, statusChangeCallback) }}
+        menu={{ items: createTableActionsMenuItems(id, deleteCallback) }}
         trigger={["click"]}
       >
         <a onClick={e => e.preventDefault()}>
