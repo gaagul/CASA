@@ -1,15 +1,26 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Button, Typography } from "antd";
 import { isEmpty } from "ramda";
 import { RightCircleOutlined, LeftCircleOutlined } from "@ant-design/icons";
 import Slider from "react-slick";
 import PropertyCard from "./PropertyCard";
+import { useLocation } from "react-router";
 import { useFetchFeaturedAssets } from "../hooks/usePropertiesApi";
+import { useQueryClient } from "@tanstack/react-query";
 
 const PopularProperties = () => {
   const sliderRef = useRef();
+  const location = useLocation();
+  const queryClient = useQueryClient();
 
   const { data: properties = [] } = useFetchFeaturedAssets();
+
+  useEffect(()=>{
+    if(location.pathname === "/")
+    {
+      queryClient.invalidateQueries("propertiesList");
+    }
+  }, [location])
 
   const settings = {
     dots: true,
@@ -25,9 +36,14 @@ const PopularProperties = () => {
   return (
     <div className="mb-8 mt-8">
       <div className="flex justify-between">
-        <Typography.Title className="heading-text-home" level={3}>
-          Popular Residences.
+        <div>
+        <Typography.Title className="heading-text-home" level={5}>
+          Best Choice
         </Typography.Title>
+        <Typography.Title style={{color: "#1F3E72", marginTop: "10px"}} level={1}>
+          Popular Residences
+        </Typography.Title>
+        </div>
         <div className="flex gap-4">
           <Button
             icon={<LeftCircleOutlined />}
