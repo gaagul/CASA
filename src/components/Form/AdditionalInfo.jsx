@@ -16,7 +16,7 @@ const AdditionalInfo = () => {
   return (
     <div className="rounded bg-white p-4 pb-8 shadow">
       <Title className="mb-4" level={2}>
-        Additional information
+        Step 3
       </Title>
       <div className="mt-8 flex flex-col gap-6">
         <div className="flex items-center gap-16">
