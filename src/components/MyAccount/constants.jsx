@@ -6,6 +6,7 @@ import {
   DesktopOutlined,
   MoreOutlined,
   DeleteOutlined,
+  EditOutlined,
 } from "@ant-design/icons";
 import AntdLink from "antd/es/typography/Link";
 import { Tag, Dropdown } from "antd";
@@ -70,20 +71,31 @@ export const items = [
 
 export const TABLE_ACTIONS = [
   { label: "Delete", icon: <DeleteOutlined /> },
+  { label: "Edit", icon: <EditOutlined />, isEdit: true },
 ];
 
-export const createTableActionsMenuItems = (id, statusChangeCallback) =>
-  TABLE_ACTIONS.map(({ label, icon }) => ({
+export const createTableActionsMenuItems = (
+  id,
+  deleteCallback,
+  navigateToEditPage
+) =>
+  TABLE_ACTIONS.map(({ label, icon, isEdit }) => ({
     key: label,
     label,
     icon,
     onClick: async () => {
-      await deletePropertyById(id);
-      statusChangeCallback();
+      if (isEdit) {
+        // If isEdit is true, navigate to the edit page
+        navigateToEditPage(id);
+      } else {
+        // Otherwise, perform the delete operation
+        await deletePropertyById(id);
+        deleteCallback();
+      }
     },
   }));
 
-export const buildColumns = deleteCallback => [
+export const buildColumns = (deleteCallback, navigateToEditPage) => [
   {
     title: "Name",
     dataIndex: "name",
@@ -125,8 +137,14 @@ export const buildColumns = deleteCallback => [
     key: "actions",
     render: (_, { id }) => (
       <Dropdown
-        menu={{ items: createTableActionsMenuItems(id, deleteCallback) }}
         trigger={["click"]}
+        menu={{
+          items: createTableActionsMenuItems(
+            id,
+            deleteCallback,
+            navigateToEditPage
+          ),
+        }}
       >
         <a onClick={e => e.preventDefault()}>
           <MoreOutlined />

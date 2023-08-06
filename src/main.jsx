@@ -16,6 +16,7 @@ import MyAccount from "./pages/MyAccount";
 import Members from "./components/AdminPanel/Members";
 import Properties from "./components/AdminPanel/Properties";
 import HomeTest from "./pages/HomeTest";
+import Edit from "./components/Edit";
 
 const Main = () => {
   const isLoggedIn = localStorage.getItem("isLoggedIn");
@@ -30,6 +31,7 @@ const Main = () => {
             <Route exact element={<ListingPage />} path="/listing" />
             {isLoggedIn ? (
               <>
+                <Route exact element={<Edit />} path="/edit/:id" />
                 <Route element={<Details />} path="/listing/:id" />
                 <Route element={<ListingPage />} path="/listing" />
                 <Route element={<Form />} path="/add" />
