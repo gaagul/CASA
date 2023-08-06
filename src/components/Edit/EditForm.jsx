@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Formik, Form, Field, FieldArray } from "formik";
-import { Typography, Button } from "antd";
-import { updatePropertyById, uploadImageAsset } from "../../apis/properties";
+import { Typography, Button, Upload, Image } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Upload, Image } from "antd";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
+import { updatePropertyById, uploadImageAsset } from "../../apis/properties";
 
 const { Title } = Typography;
 
@@ -57,13 +56,11 @@ const PropertyForm = ({ property, onSubmit }) => {
       </div>
     </div>
   );
-  
+
   const handleNewImageAssetsUpload = async () => {
     let thumbnailUrl = null;
-    if(assets.thumbnail){
-    thumbnailUrl = await uploadImageAsset(
-    assets.thumbnail
-    );
+    if (assets.thumbnail) {
+      thumbnailUrl = await uploadImageAsset(assets.thumbnail);
     }
     const imageList = [];
     for (const file of assets.fileList) {
@@ -71,26 +68,28 @@ const PropertyForm = ({ property, onSubmit }) => {
       console.log(imageUrl);
       imageList.push(imageUrl);
     }
-    return {thumbnailUrl, imageList};
-  }
+
+    return { thumbnailUrl, imageList };
+  };
 
   return (
     <Formik
       initialValues={editableProperty}
-      onSubmit={async (values) => {
+      onSubmit={async values => {
         // Handle the form submission here, you can call the onSubmit function passed as a prop
         const imageLinks = await handleNewImageAssetsUpload();
-        if(imageLinks.thumbnailUrl)
+        if (imageLinks.thumbnailUrl) {
           values.thumbnailUrl = imageLinks.thumbnailUrl;
+        }
         values.imageList.push(...imageLinks.imageList);
         const propertyId = location.pathname.replace("/edit/", "");
-        updatePropertyById(propertyId, values)
-        
-        navigate("/account")
+        updatePropertyById(propertyId, values);
+
+        navigate("/account");
         // onSubmit(values);
       }}
     >
-      {({ values }) => (
+      {({ values, isSubmitting }) => (
         <Form className="rounded bg-white p-4 pb-8 shadow">
           <div className="centering-wrapper">
             <Title className="mb-4" level={2}>
@@ -165,20 +164,29 @@ const PropertyForm = ({ property, onSubmit }) => {
                 <Typography>Cover Image</Typography>
                 <Upload.Dragger className="max-w-xs" {...coverUploadProps}>
                   {editableProperty.thumbnailUrl ? (
-                    <img alt="alternate" src={assets.thumbnail ? URL.createObjectURL(assets.thumbnail) : editableProperty.thumbnailUrl} />
+                    <img
+                      alt="alternate"
+                      src={
+                        assets.thumbnail
+                          ? URL.createObjectURL(assets.thumbnail)
+                          : editableProperty.thumbnailUrl
+                      }
+                    />
                   ) : (
                     uploadButton()
                   )}
                 </Upload.Dragger>
               </div>
-              <div className="col-span-2" style={{marginTop: "50px"}}>
-                
+              <div className="col-span-2" style={{ marginTop: "50px" }}>
                 <FieldArray name="imageList">
-                  
                   {({ remove }) => (
-                    <div style={{display: "flex"}}>
+                    <div style={{ display: "flex" }}>
                       {values.imageList.map((image, index) => (
-                        <div className="image-field" style={{textAlign: "center", margin: "10px"}} key={index}>
+                        <div
+                          className="image-field"
+                          key={index}
+                          style={{ textAlign: "center", margin: "10px" }}
+                        >
                           <div
                             className="square-image"
                             style={{
@@ -186,14 +194,13 @@ const PropertyForm = ({ property, onSubmit }) => {
                               height: "100px", // Set your desired square size here
                               overflow: "hidden",
                               position: "relative",
-                              borderRadius: "8px"
-                              
+                              borderRadius: "8px",
                             }}
                           >
                             <Image
                               alt={`Image ${index + 1}`}
-                              src={image}
                               height={100}
+                              src={image}
                               style={{
                                 objectFit: "cover",
                               }}
@@ -201,25 +208,26 @@ const PropertyForm = ({ property, onSubmit }) => {
                           </div>
                           <Button
                             danger
-                            type="text"
-                            style={{height: "3em", width: "3em", margin: "5px"}}
                             icon={<DeleteOutlined />}
+                            type="text"
+                            style={{
+                              height: "3em",
+                              width: "3em",
+                              margin: "5px",
+                            }}
                             onClick={() => remove(index)}
                           />
                         </div>
                       ))}
-                      
                     </div>
                   )}
-                  
-
                 </FieldArray>
                 <Upload multiple listType="picture-card" {...assetsUploadProps}>
-                        {assets.fileList.length >= 8 ? null : uploadButton()}
-                      </Upload>
+                  {assets.fileList.length >= 8 ? null : uploadButton()}
+                </Upload>
               </div>
             </div>
-            <Button className="mt-4" htmlType="submit" type="primary">
+            <Button className="mt-4" htmlType="submit" type="primary" disabled={isSubmitting} loading={isSubmitting}>
               Submit
             </Button>
           </div>
