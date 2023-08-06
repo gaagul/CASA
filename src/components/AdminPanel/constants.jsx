@@ -115,11 +115,6 @@ export const buildPropertiesColumns = statusChangeCallback => [
     key: "price",
   },
   {
-    title: "Address",
-    dataIndex: "location",
-    key: "location",
-  },
-  {
     title: "Tags",
     key: "type",
     dataIndex: "type",

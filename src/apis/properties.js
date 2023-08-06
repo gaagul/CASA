@@ -62,6 +62,16 @@ const deletePropertyById = async (propertyId) => {
   return await deleteDoc(doc(db, "properties", propertyId)).then(response=>{console.log("Successfully Deleted"+propertyId)}).catch(error=>{throw error});
 }
 
+const updatePropertyById = async (propertyId, updatedPropertyData) => {
+  try {
+    const propertyRef = doc(db, 'properties', propertyId);
+    await updateDoc(propertyRef, updatedPropertyData);
+    console.info(`Successfully updated property: ${propertyId} with ${updatedPropertyData}`)
+  } catch (error) {
+    console.error(`Error while updating property: ${propertyId} with ${updatedPropertyData}`)
+  }
+}
+
 const fetchUserById = async uid =>
   await getDoc(doc(db, "users", uid))
     .then(response => response)
@@ -199,6 +209,7 @@ export {
   fetchApprovedProperties,
   fetchFeaturedProperties,
   createProperty,
+  updatePropertyById,
   setPropertyStatus,
   createNewUserWithRole,
   uploadImageAsset,

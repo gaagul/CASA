@@ -114,11 +114,6 @@ export const buildColumns = (deleteCallback, navigateToEditPage) => [
     key: "price",
   },
   {
-    title: "Address",
-    dataIndex: "location",
-    key: "location",
-  },
-  {
     title: "Tags",
     key: "type",
     dataIndex: "type",
