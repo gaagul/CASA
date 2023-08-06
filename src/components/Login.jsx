@@ -38,8 +38,8 @@ const Login = () => {
         <CssBaseline />
         <Grid
           item
-          md={7}
-          sm={4}
+          md={12}
+          sm={12}
           xs={false}
           sx={{
             backgroundImage:
@@ -51,35 +51,41 @@ const Login = () => {
                 : t.palette.grey[900],
             backgroundSize: "cover",
             backgroundPosition: "center",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center"
           }}
-        />
-        <Grid item square component={Paper} elevation={6} md={5} sm={8} xs={12}>
-          <Box
-            sx={{
-              my: 8,
-              mx: 4,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <Avatar sx={{ m: 1, mt: 15, bgcolor: "secondary.main" }}>
-              <LockOutlined />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign in
-            </Typography>
+        >
+          <Grid item component={Paper} elevation={22} md={3} sm={8} xs={12}>
             <Box
-              noValidate
-              className="!max-w-[60%]"
-              component="form"
-              sx={{ mt: 1 }}
+              sx={{
+                mt: 6,
+                mx: 2,
+                mb: 4,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
             >
-              <GoogleAuth redirectPath="/listing" />
-              <Copyright sx={{ mt: 5 }} />
+              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                <LockOutlined />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Sign in
+              </Typography>
+              <Box
+                noValidate
+                className="!max-w-[60%]"
+                component="form"
+                sx={{ mt: 1 }}
+              >
+                <GoogleAuth redirectPath="/listing" />
+                <Copyright sx={{ mt: 5 }} />
+              </Box>
             </Box>
-          </Box>
+          </Grid>
         </Grid>
+
       </Grid>
     </ThemeProvider>
   );

@@ -47,7 +47,7 @@ const ListingPage = () => {
 
   return (
     <div className="min-h-screen bg-[#f7f7fe]">
-      <Container className="min-h-screen">
+        <div className="centering-wrapper">
         <div className="flex h-full w-full flex-col px-24 pb-2 pt-16">
           <Filterbar
             filters={filters}
@@ -77,7 +77,7 @@ const ListingPage = () => {
           total={filteredProperties.length}
           onChange={setCurrentPage}
         />
-      </Container>
+      </div>
     </div>
   );
 };
