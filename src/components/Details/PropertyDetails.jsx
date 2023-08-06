@@ -13,7 +13,7 @@ const PropertyDetails = ({ house }) => (
       <Typography.Text>Bedrooms</Typography.Text>
       <div className="flex items-center gap-2">
         <BedOutlined className="primary-text" />
-        <Typography.Text className="primary-text">{house.beds}</Typography.Text>
+        <Typography.Text className="primary-text">{house.bedrooms}</Typography.Text>
       </div>
     </div>
     <div className="flex flex-col gap-2 p-4">
@@ -21,7 +21,7 @@ const PropertyDetails = ({ house }) => (
       <div className="flex items-center gap-2">
         <BathroomOutlined className="primary-text" />
         <Typography.Text className="primary-text">
-          {house.baths}
+          {house.bathrooms}
         </Typography.Text>
       </div>
     </div>
