@@ -26,7 +26,7 @@ export const filterProperties = (properties, filters) => {
   return properties.filter(property => {
     const isTypeMatched = !type || property.type === type;
     const isLocationMatched =
-      !location || Number(property.zipcode) === Number(location);
+      !location || property.zipcode === location;
     const isPriceMatched = !price || Number(property.price) === Number(price);
 
     return isTypeMatched && isLocationMatched && isPriceMatched;
