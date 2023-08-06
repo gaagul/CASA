@@ -23,6 +23,8 @@ const Form = () => {
   });
   const [currentStep, setCurrentStep] = useState(0);
 
+  console.log(assets);
+
   const nextStep = () => {
     if (currentStep < 2) {
       setCurrentStep(inc);
@@ -43,9 +45,8 @@ const Form = () => {
     // thumbnail image upload
     // console.log(assets);
     const thumbnailUrl = await uploadImageAsset(
-      assets.thumbnail.thumbURL.slice(23)
+      assets.thumbnail
     );
-    console.log(thumbnailUrl);
     updateDoc(
       doc(
         db,
@@ -58,7 +59,7 @@ const Form = () => {
     // //Image List upload
     const imageList = [];
     for (const file of assets.fileList) {
-      const imageUrl = await uploadImageAsset(file.thumbUrl.slice(22));
+      const imageUrl = await uploadImageAsset(file.originFileObj);
       console.log(imageUrl);
       imageList.push(imageUrl);
     }

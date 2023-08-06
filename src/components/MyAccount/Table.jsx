@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Table as AntdTable, Spin } from "antd";
 import { useQueryClient } from "@tanstack/react-query";
 import { useGetPropertiesByUserId } from "../../hooks/usePropertiesApi";
 import { buildColumns } from "./constants";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { getFromLocalStorage } from "../../hooks/useLocalStorage";
 
 const Table = ({ searchParams }) => {
@@ -14,6 +14,14 @@ const Table = ({ searchParams }) => {
     keyword: searchParams.get("keyword"),
     status: searchParams.get("status"),
   };
+
+  const location = useLocation();
+  useEffect(()=>{
+    if(location.pathname === "/account")
+    {
+      queryClient.invalidateQueries("getPropertiesOfAUser");
+    }
+  }, [location])
 
   const deleteCallback = () =>
     queryClient.invalidateQueries("getPropertiesOfAUser");
