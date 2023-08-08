@@ -7,11 +7,13 @@ import {
 } from "@ant-design/icons";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const Header = ({ house }) => {
   const navigate = useNavigate();
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
+    toast("Link copied to clipboard", { type: "success" });
   };
 
   const handleBrowse = () => {
@@ -41,13 +43,6 @@ const Header = ({ house }) => {
             onClick={handleShare}
           >
             Share
-          </Button>
-          <Button
-            className="primary-text secondary-button-bg flex items-center"
-            icon={<HeartOutlined />}
-            type="secondary"
-          >
-            Favorite
           </Button>
           <Button
             className="primary-text secondary-button-bg flex items-center"
