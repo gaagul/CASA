@@ -6,6 +6,7 @@ import {
   Navigate,
   useLocation,
 } from "react-router-dom";
+import { Toaster } from "sonner";
 import Login from "components/Login";
 import AdminPanel from "./pages/AdminPanel";
 import ListingPage from "./pages/ListingPage";
@@ -25,6 +26,7 @@ const Main = () => {
     <div className="h-screen w-screen">
       <React.StrictMode>
         <BrowserRouter>
+          <Toaster />
           <Nav />
           <Routes>
             <Route element={<Login />} path="/login" />

@@ -7,26 +7,30 @@ import {
   ConfigProvider,
   Collapse,
   Card,
+  Modal,
   Button,
 } from "antd";
 import { MessageOutlined } from "@ant-design/icons";
+import { useNavigate, Link as RouterLink } from "react-router-dom";
+import AnchorLink from "react-anchor-link-smooth-scroll";
+import { not } from "ramda";
 import Nav from "../components/Nav";
 import { createQueryString } from "../utils";
-import { useNavigate, Link as RouterLink } from "react-router-dom";
-import AnchorLink from 'react-anchor-link-smooth-scroll'
 import PopularProperties from "../components/PopularProperties";
 
 const { Title, Paragraph, Text, Link } = Typography;
 const { Search } = Input;
 
 const HomeTest = () => {
-    const navigate = useNavigate();
-    const [values, setValues] = useState({type: "rent", location: ""});
-    const pageTheme = {
-        token: {
-            colorPrimary: '#fa541c',
-        },
-    };
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const navigate = useNavigate();
+  const [values, setValues] = useState({ type: "rent", location: "" });
+  const pageTheme = {
+    token: {
+      colorPrimary: "#fa541c",
+    },
+  };
+
   const serviceValuesCollapseData = [
     {
       key: "1",
@@ -54,27 +58,28 @@ const HomeTest = () => {
       ),
     },
   ];
-    const handleSearch = values => {
-        // Filter keys with non-empty values
-        const searchParams = Object.keys(values).reduce((params, key) => {
-          if (values[key]) {
-            params[key] = values[key];
-          }
-    
-          return params;
-        }, {});
-    
-        // Check if the searchParams object is empty
-        const isEmpty = Object.keys(searchParams).length === 0;
-    
-        if (isEmpty) {
-          // If searchParams object is empty, navigate to '/listing' without query parameters
-          navigate("/listing");
-        } else {
-          const getQueryParams = createQueryString(searchParams);
-          navigate(`/listing?${getQueryParams}`);
-        }
-      };
+
+  const handleSearch = values => {
+    // Filter keys with non-empty values
+    const searchParams = Object.keys(values).reduce((params, key) => {
+      if (values[key]) {
+        params[key] = values[key];
+      }
+
+      return params;
+    }, {});
+
+    // Check if the searchParams object is empty
+    const isEmpty = Object.keys(searchParams).length === 0;
+
+    if (isEmpty) {
+      // If searchParams object is empty, navigate to '/listing' without query parameters
+      navigate("/listing");
+    } else {
+      const getQueryParams = createQueryString(searchParams);
+      navigate(`/listing?${getQueryParams}`);
+    }
+  };
 
   return (
     <ConfigProvider theme={pageTheme}>
@@ -92,23 +97,34 @@ const HomeTest = () => {
               Find a variety of properties that suit you hassle-free, forget all
               difficulties in finding the perfect home.
             </Paragraph>
-            <Space direction='horizontal' style={{ width: '100%', margin: '30px 0' }} size={20}>
-                                <Switch
-                                    checked={values.type === "rent"}
-                                    checkedChildren="Rent"
-                                    unCheckedChildren="Sale"
-                                    onChange={e => setValues({ ...values, type: values.type==="rent"?"sale":"rent"})}
-                                />
-                                <Search
-                                    placeholder="Search Location"
-                                    allowClear
-                                    enterButton="Search"
-                                    size="large"
-                                    onChange={e => setValues({ ...values, location: e.target.value })}
-                                    onSearch={() => handleSearch(values)}
-                                    style={{ width: 500 }}
-                                />
-                            </Space>
+            <Space
+              direction="horizontal"
+              size={20}
+              style={{ width: "100%", margin: "30px 0" }}
+            >
+              <Switch
+                checked={values.type === "rent"}
+                checkedChildren="Rent"
+                unCheckedChildren="Sale"
+                onChange={e =>
+                  setValues({
+                    ...values,
+                    type: values.type === "rent" ? "sale" : "rent",
+                  })
+                }
+              />
+              <Search
+                allowClear
+                enterButton="Search"
+                placeholder="Search Location"
+                size="large"
+                style={{ width: 500 }}
+                onSearch={() => handleSearch(values)}
+                onChange={e =>
+                  setValues({ ...values, location: e.target.value })
+                }
+              />
+            </Space>
           </div>
           <div className="hero-sideimage-wrapper">
             <img alt="" src="src/assets/sideimage-one.jpg" width={450} />
@@ -158,18 +174,32 @@ const HomeTest = () => {
                   <MessageOutlined
                     style={{ color: "#1F3E72", fontSize: "24px " }}
                   />
-
                 </div>
                 <Title level={4} style={{ margin: 0 }}>
                   Message Us
                 </Title>
               </Space>
               <div style={{ marginTop: "20px" }}>
-                <Button size="large" type="primary">
+                <Button
+                  size="large"
+                  type="primary"
+                  onClick={() => setIsModalVisible(not)}
+                >
                   Send a message
                 </Button>
               </div>
             </Card>
+            <Modal
+              open={isModalVisible}
+              onCancel={() => setIsModalVisible(false)}
+              onOk={() => setIsModalVisible(false)}
+            >
+              <div className="flex flex-col justify-between">
+                <Typography.Text className="mt-4">
+                  Email: basben.benny@gmail.com
+                </Typography.Text>
+              </div>
+            </Modal>
           </div>
           <div className="service-values-sideimage-wrapper">
             <img alt="" src="/src/assets/sideimage-three.avif" width={400} />
@@ -185,7 +215,9 @@ const HomeTest = () => {
               perfect house for you.
             </Text>
             <div className="get-started-button-wrapper">
-              <RouterLink to="/listing"><Button size="large">Get Started</Button></RouterLink>
+              <RouterLink to="/listing">
+                <Button size="large">Get Started</Button>
+              </RouterLink>
             </div>
           </div>
         </div>
@@ -201,13 +233,21 @@ const HomeTest = () => {
               <Space size="large">
                 <Space direction="vertical">
                   <Title level={5}>About</Title>
-                  <AnchorLink href='#service-values'><Link>Our Values</Link></AnchorLink>
-                  <AnchorLink href='#contact-us'><Link>Contact Us</Link></AnchorLink>
+                  <AnchorLink href="#service-values">
+                    <Link>Our Values</Link>
+                  </AnchorLink>
+                  <AnchorLink href="#contact-us">
+                    <Link>Contact Us</Link>
+                  </AnchorLink>
                 </Space>
                 <Space direction="vertical">
                   <Title level={5}>Explore</Title>
-                  <RouterLink to="/login"><Link>Login</Link></RouterLink>
-                  <RouterLink to="/listing"><Link>Find properties</Link></RouterLink>
+                  <RouterLink to="/login">
+                    <Link>Login</Link>
+                  </RouterLink>
+                  <RouterLink to="/listing">
+                    <Link>Find properties</Link>
+                  </RouterLink>
                 </Space>
               </Space>
             </div>

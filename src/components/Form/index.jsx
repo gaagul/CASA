@@ -5,6 +5,7 @@ import { Formik, Form as FormikForm } from "formik";
 import { Container } from "@mui/material";
 import { updateDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import Steps from "./Steps";
 import Basic from "./Basic";
 import Assets from "./Assets";
@@ -22,8 +23,6 @@ const Form = () => {
     coverImage: null,
   });
   const [currentStep, setCurrentStep] = useState(0);
-
-  console.log(assets);
 
   const nextStep = () => {
     if (currentStep < 2) {
@@ -44,9 +43,8 @@ const Form = () => {
     console.log("createdPropertyRef", createdPropertyRef);
     // thumbnail image upload
     // console.log(assets);
-    const thumbnailUrl = await uploadImageAsset(
-      assets.thumbnail
-    );
+    const thumbnailUrl = await uploadImageAsset(assets.thumbnail);
+
     updateDoc(
       doc(
         db,
@@ -85,6 +83,9 @@ const Form = () => {
     formData.isFeatured = false;
     const createdPropertyRef = await createProperty(formData);
     await handleAssetUpload(createdPropertyRef);
+    toast.success("Property created successfully, It is under review", {
+      type: "success",
+    });
     navigate("/listing");
   };
 
@@ -109,7 +110,7 @@ const Form = () => {
         validationSchema={VALIDATION_SCHEMA}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting, values, setSubmitting }) => (
+        {({ isSubmitting }) => (
           <FormikForm>
             {renderCurrentStep()}
             <div className="mt-8 flex justify-end gap-6">
