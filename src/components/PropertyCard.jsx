@@ -1,13 +1,13 @@
 import React from "react";
 import {
-  Favorite,
-  FavoriteBorder,
   KingBedOutlined,
   BathtubOutlined,
   AspectRatioOutlined,
 } from "@mui/icons-material";
 import { IconButton, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import StarIcon from '@mui/icons-material/Star';
 
 const PropertyCard = ({ property }) => {
   const navigate = useNavigate();
@@ -42,10 +42,10 @@ const PropertyCard = ({ property }) => {
               height: "30px",
             }}
           >
-            {property?.favorite ? (
-              <Favorite className="primary-text" />
+            {property?.isFeatured ? (
+              <StarIcon className="primary-text" />
             ) : (
-              <FavoriteBorder className="primary-text" />
+              <StarBorderIcon className="primary-text" />
             )}
           </IconButton>
         </div>
